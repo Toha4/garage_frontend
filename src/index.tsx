@@ -1,15 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./styles/index.css";
+import "antd/dist/antd.min.css"
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import locale from "antd/lib/locale-provider/ru_RU";
+import { ConfigProvider } from "antd";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ConfigProvider locale={locale}>
+      <App />
+    </ConfigProvider>
   </React.StrictMode>
 );
 

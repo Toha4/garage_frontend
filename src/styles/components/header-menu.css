@@ -20,6 +20,6 @@
 
 .menu {
   line-height: 54px !important;
-  background: inherit;
+  background: inherit !important;
   font-weight: 600;
 }

@@ -14,21 +14,21 @@ const { Content } = Layout;
 
 
 function App() {
-  const { isLogged } = useAuth();
+  const { isLogged, user } = useAuth();
 
   return (
     <div className="App">
       {isLogged !== null && (
         <Router>
           <Layout style={{ minWidth: '450px', width: 'auto', background: "white" }}>
-            {isLogged && <HeaderMenu />}
-            <Content style={{ marginTop: isLogged ? "64px" : "0px", textAlign: "start" }} >
+            {isLogged && <HeaderMenu user={user} />}
+            <Content style={{ marginTop: isLogged ? "56px" : "0px", textAlign: "start" }} >
               <Routes>
                 <Route path="/login" element={isLogged === false ? <LoginForm /> : <Navigate to='/' />} />
-                <Route path="/" element={<PrivateRoute component={OrdersPage} />} />
+                <Route path="/" element={<PrivateRoute user={user} component={OrdersPage} />} />
                 {/* <Route path='/warehouse' element={<PrivateRoute component={WarehousePage} />} /> */}
                 {/* <Route path='/report-vehicles' element={<PrivateRoute component={ReportVehiclesPage} />} /> */}
-                <Route path='/handbooks' element={<PrivateRoute component={HandbooksPage} />} />
+                <Route path='/handbooks' element={<PrivateRoute user={user} component={HandbooksPage} />} />
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </Content>

@@ -1,14 +1,15 @@
 import React, { Fragment } from "react";
 import { Avatar, Button } from "antd";
 import { SettingOutlined, UserOutlined } from "@ant-design/icons";
-import AuthService from "../services/AuthService";
-import { useAuth } from "../services/AuthService";
+import AuthService, { IUser as User_ } from "../services/AuthService";
 import logout from "../assets/img/logout.png";
 
 
-const User: React.FC = () => {
-  const { user } = useAuth();
+interface IUser {
+  user: User_ | null
+};
 
+const User: React.FC<IUser> = ({user}) => {
   const onLogout = () => {
     AuthService.logout()
       .catch((error) => (
@@ -20,7 +21,7 @@ const User: React.FC = () => {
     <Fragment>
       <div className="header-control">
         {user?.is_superuser &&
-          <Button href="/admin/" shape="circle" icon={<SettingOutlined />} style={{ background: 'in' }} />
+          <Button href="/admin/" shape="circle" icon={<SettingOutlined />} />
         }
         <div className="user-block">
           <Avatar

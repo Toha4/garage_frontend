@@ -7,15 +7,15 @@ import UserContext from "../../../helpers/UserContext";
 import OrderService from "../../../services/OrderService";
 import CarService from "../../../services/CarService";
 import { CarType, OrderType } from "../../../services/types";
-import SelectOrderStatusForm from "./SelectOrderStatusForm";
-import DatePickerForm from "./DatePickerForm";
-import SelectEmployeeForm from "./SelectEmployeeForm";
-import SelectReasonForm from "./SelectReasonForm";
-import SelectPostForm from "./SelectPostFrom";
-import SelectCarForm from "./SelectCarFrom";
-import InputForm from "../InputForm";
-import TextAreaForm from "../TextAreaForm";
-import InputNumberForm from "../InputNumberForm";
+import SelectOrderStatusForm from "../../forms/components/SelectOrderStatusForm";
+import DatePickerForm from "../../forms/components/DatePickerForm";
+import SelectEmployeeForm from "../../forms/components/SelectEmployeeForm";
+import SelectReasonForm from "../../forms/components/SelectReasonForm";
+import SelectPostForm from "../../forms/components/SelectPostFrom";
+import SelectCarForm from "../../forms/components/SelectCarFrom";
+import InputForm from "../../forms/components/InputForm";
+import TextAreaForm from "../../forms/components/TextAreaForm";
+import InputNumberForm from "../../forms/components/InputNumberForm";
 import showDeleteConfirmDialog from "../../common/DeleteDialog";
 import { Status } from "../../../helpers/constants";
 import { IFormOrderInputs } from "../../interface";
@@ -32,7 +32,7 @@ interface IOrderModalForm {
 
 const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk, handleCancel }) => {
   const user = React.useContext(UserContext);
-  const edit_mode: boolean = user ? user.edit_access : false;
+  const editMode: boolean = user ? user.edit_access : false;
 
   const DataOrderService = new OrderService();
   const DataCarService = new CarService();
@@ -215,7 +215,6 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
     <Modal
       title={getTitle()}
       open={open}
-      okText={`${action === ActionTypes.ADD ? "Добавить" : "Сохранить"}`}
       onCancel={onCancel}
       maskClosable={false}
       width={800}
@@ -240,7 +239,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
         </Button>,
       ]}
     >
-      <Form layout="vertical" disabled={!edit_mode}>
+      <Form layout="vertical" disabled={!editMode}>
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Статус">
@@ -317,7 +316,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Работы" key="1">
           <Form.Item>
-            <TableOrderWorksForm name="works" control={control} />
+            <TableOrderWorksForm name="works" control={control} editMode={editMode} />
           </Form.Item>
         </Tabs.TabPane>
         <Tabs.TabPane disabled tab="Материалы" key="2">

@@ -23,6 +23,7 @@ code {
 
 /* Pages */
 @import 'pages/login.css';
+@import 'pages/handbooks.css';
 
 /* Components */
 @import 'components/user.css';
@@ -69,4 +70,8 @@ code {
   margin-bottom: 10px;
   margin-top: 10px;
   margin-left: 10px;
+}
+
+.ant-modal-body {
+  padding: 16px !important;
 }

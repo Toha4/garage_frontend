@@ -8,7 +8,7 @@ import OrderService from "../services/OrderService";
 import { ITableParams } from "../components/interface";
 import OrdersFilter from "../components/OrdersFilter";
 import { ActionTypes } from "../helpers/types";
-import OrderModalForm from "../components/forms/OrderModalForm";
+import OrderModalForm from "../components/modals/OrderModal";
 
 const TableParamsDefault: ITableParams = {
   pagination: {},

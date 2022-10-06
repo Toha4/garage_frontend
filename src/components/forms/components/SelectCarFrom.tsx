@@ -6,13 +6,13 @@ import { CarShortType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectStatus {
+interface ISelectCar {
   name: string;
   control: any;
   onChange?: (value: any, option: any) => void;
 }
 
-const SelectCarForm: React.FC<ISelectStatus> = ({ name, control, onChange }) => {
+const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange }) => {
   const DataCarService = new CarService();
 
   const [cars, setCar] = React.useState<CarShortType[]>();
@@ -47,8 +47,8 @@ const SelectCarForm: React.FC<ISelectStatus> = ({ name, control, onChange }) => 
           }}
         >
           {cars &&
-            cars.map((car, index) => (
-              <Option key={index} value={car.pk}>
+            cars.map((car, _) => (
+              <Option key={car.pk} value={car.pk}>
                 {car.state_number}
               </Option>
             ))}

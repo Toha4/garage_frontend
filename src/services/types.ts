@@ -30,8 +30,10 @@ export type OrderWorkMechanics = {
 };
 
 export type OrderWorkType = {
-  pk?: number;
+  pk?: number | null;
   work: number | null;
+  work_name: string;
+  work_category: number;
   quantity: number;
   time_minutes: number | null;
   note: string;
@@ -58,9 +60,10 @@ export type OrderType = {
 };
 
 export type ReasonType = {
-  pk: number;
+  pk?: number;
   name: string;
   type: number;
+  delete_forbidden?: boolean;
 };
 
 export type EmployeeShortType = {
@@ -101,4 +104,19 @@ export type CarType = {
 export type PostType = {
   pk?: number;
   name: string;
+  delete_forbidden?: boolean;
 };
+
+export type WorkType = {
+  pk: number | null;
+  category: number;
+  name: string;
+  delete_forbidden?: boolean;
+};
+
+export type WorkCategoryType = {
+  pk: number | null;
+  name: string;
+  work_count?: number;
+};
+

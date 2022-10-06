@@ -1,4 +1,5 @@
 import { FilterValue, SortOrder, TablePaginationConfig } from "antd/lib/table/interface";
+import { type } from "os";
 import { OrderWorkType } from "../services/types";
 
 export interface ITableParams {
@@ -22,4 +23,22 @@ export interface IFormOrderInputs {
   odometer: number | null;
   note: string;
   works: OrderWorkType[] | null;
+}
+
+export interface IFormWorkInputs {
+  category: number;
+  name: string;
+}
+
+export interface IFormWorkCategoryInputs {
+  name: string;
+}
+
+export interface IFormReasonInputs {
+  type: number;
+  name: string;
+}
+
+export interface IFormPostInputs {
+  name: string;
 }

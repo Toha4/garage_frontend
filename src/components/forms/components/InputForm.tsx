@@ -15,7 +15,7 @@ const InputForm: React.FC<IInputForm> = ({ name, control, required = false, disa
     <Controller
       name={name}
       control={control}
-      render={({ field }) => <Input required={required} disabled={disabled} placeholder={placeholder} {...field} />}
+      render={({ field }) => <Input autoComplete="off" required={required} disabled={disabled} placeholder={placeholder} {...field} />}
     />
   );
 };

@@ -29,6 +29,10 @@ class OrderService extends BaseService {
   deleteOrder = async (pk: number) => {
     return await this.deleteResource(`${this._apiURL}${pk}`);
   };
+
+  exportToExcel = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}excel/`, params);
+  };
 }
 
 export default OrderService;

@@ -23,14 +23,14 @@ import { formToOrderData, hasChangeOrderForm } from "../../../helpers/formUtils"
 import TableOrderWorksForm from "./TableOrderWorksForm";
 
 interface IOrderModalForm {
-  pk: number | null;
+  orderPk: number | null;
   open: boolean;
-  action: ActionTypes;
+  actionForm: ActionTypes;
   handleOk: () => void;
   handleCancel: (update: boolean) => void;
 }
 
-const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk, handleCancel }) => {
+const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, handleOk, handleCancel }) => {
   const user = React.useContext(UserContext);
   const editMode: boolean = user ? user.edit_access : false;
 
@@ -54,8 +54,11 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
       post: null,
       odometer: null,
       note: "",
+      works: [],
     },
   });
+  const [pk, setPk] = React.useState<number | null>(orderPk);
+  const [action, setAction] = React.useState<ActionTypes>(actionForm);
   const [confirmLoading, setConfirmLoading] = React.useState<boolean>(false);
   const [orderData, setOrderData] = React.useState<OrderType>();
   const [saveFlag, setSaveFlag] = React.useState<boolean>(false);
@@ -76,20 +79,8 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
 
     if (action === ActionTypes.EDIT && pk) {
       const onDataLoaded = (data: OrderType) => {
-        setValue("status", data.status);
-        setValue("date_begin", moment(data.date_begin, "DD.MM.YYYY h:mm:"));
-        setValue("date_end", data.date_end ? moment(data.date_end, "DD.MM.YYYY h:mm:") : null);
-        setValue("responsible", data.responsible);
-        setValue("driver", data.driver);
-        setValue("reason", data.reason);
-        setValue("post", data.post);
-        setValue("car", data.car);
-        setValue("car_name", data.car_name || "");
-        setValue("odometer", data.odometer);
-        setValue("note", data.note);
-        setValue("works", data.order_works);
-
         setOrderData(data);
+        setOrderForm(data);
       };
 
       const onError = (error: any) => {
@@ -99,6 +90,21 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
       DataOrderService.getOrder(pk).then(onDataLoaded).catch(onError);
     }
   }, []);
+
+  const setOrderForm = (data: OrderType) => {
+    setValue("status", data.status);
+    setValue("date_begin", moment(data.date_begin, "DD.MM.YYYY h:mm:"));
+    setValue("date_end", data.date_end ? moment(data.date_end, "DD.MM.YYYY h:mm:") : null);
+    setValue("responsible", data.responsible);
+    setValue("driver", data.driver);
+    setValue("reason", data.reason);
+    setValue("post", data.post);
+    setValue("car", data.car);
+    setValue("car_name", data.car_name || "");
+    setValue("odometer", data.odometer);
+    setValue("note", data.note);
+    setValue("works", data.order_works);
+  };
 
   const getTitle = () => {
     return (
@@ -114,13 +120,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
           <span>Новый заказ-наряд</span>
         )}
         <Button size="small" style={{ marginLeft: "30px" }} onClick={onPrint}>
-          Печать
+          В Excel
         </Button>
       </div>
     );
   };
 
-  const onSubmit = (data: IFormOrderInputs, withoutClose = false) => {
+  const onSubmit = (data: IFormOrderInputs, withoutClose = false, callback?: any) => {
     setConfirmLoading(true);
 
     const orderData = formToOrderData(data);
@@ -129,7 +135,15 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
       setConfirmLoading(false);
       if (withoutClose) {
         setOrderData(data);
+        setOrderForm(data);
         setSaveFlag(true);
+
+        if (pk === null) {
+          setPk(data.pk || null);
+          setAction(ActionTypes.EDIT);
+        }
+
+        if (callback) callback();
       } else {
         handleOk();
       }
@@ -147,8 +161,8 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
     }
   };
 
-  const onOk = (withoutClose = false) => {
-    handleSubmit((data: IFormOrderInputs) => onSubmit(data, withoutClose))();
+  const onOk = (withoutClose = false, callback?: any) => {
+    handleSubmit((data: IFormOrderInputs) => onSubmit(data, withoutClose, callback))();
   };
 
   const onCancel = () => {
@@ -186,8 +200,27 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
   };
 
   const onPrint = () => {
-    // TODO: Create print
-    console.log("Print order!!!!!!");
+    const toExcel = () => {
+      DataOrderService.exportToExcel({ pk })
+        .then((data) => {
+          const link = document.createElement("a");
+          link.href = data.file;
+          link.target = "_blank";
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode?.removeChild(link);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+
+    if (pk) {
+      onOk(true, toExcel);
+    }
+    else {
+      toExcel();
+    }
   };
 
   const onChangeDateEnd = (date: moment.Moment, dateString: string) => {
@@ -208,8 +241,10 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
   };
 
   const isShowRemoveButton = (): boolean => {
-    return user?.is_superuser || ((orderData?.pk as unknown as boolean) && Number(watch("status")) === Status.REQUEST);
+    return user?.is_superuser || (pk !== null && Number(watch("status")) === Status.REQUEST);
   };
+
+  const dateRequestData = watch("date_begin");
 
   return (
     <Modal
@@ -217,27 +252,35 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
       open={open}
       onCancel={onCancel}
       maskClosable={false}
-      width={800}
-      footer={[
-        <Button
-          danger
-          key="delete"
-          type="primary"
-          style={{
-            display: isShowRemoveButton() ? "inherit" : "none",
-            float: "left",
-          }}
-          onClick={onRemoveOrder}
-        >
-          Удалить
-        </Button>,
-        <Button key="save" type="primary" loading={confirmLoading} onClick={() => onOk(true)}>
-          Сохранить
-        </Button>,
-        <Button key="submit" type="primary" loading={confirmLoading} onClick={() => onOk()}>
-          Сохранить и выйти
-        </Button>,
-      ]}
+      width={900}
+      footer={
+        editMode
+          ? [
+              <Button
+                danger
+                key="delete"
+                type="primary"
+                style={{
+                  display: isShowRemoveButton() ? "inherit" : "none",
+                  float: "left",
+                }}
+                onClick={onRemoveOrder}
+              >
+                Удалить
+              </Button>,
+              <Button key="save" type="primary" loading={confirmLoading} onClick={() => onOk(true)}>
+                Сохранить
+              </Button>,
+              <Button key="submit" type="primary" loading={confirmLoading} onClick={() => onOk()}>
+                Сохранить и выйти
+              </Button>,
+            ]
+          : [
+              <Button key="close" onClick={onCancel}>
+                Закрыть
+              </Button>,
+            ]
+      }
     >
       <Form layout="vertical" disabled={!editMode}>
         <Row gutter={24}>
@@ -258,7 +301,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
           </Col>
           <Col span={6}>
             <Form.Item label="Ответственный">
-              <SelectEmployeeForm name="responsible" control={control} type={3} />
+              <SelectEmployeeForm name="responsible" control={control} type={3} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
         </Row>
@@ -266,7 +309,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Гос. №" required validateStatus={errors.car ? "error" : "success"}>
-              <SelectCarForm name="car" control={control} onChange={onChangeCar} />
+              <SelectCarForm name="car" control={control} onChange={onChangeCar} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -289,7 +332,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Водитель">
-              <SelectEmployeeForm name="driver" control={control} type={1} />
+              <SelectEmployeeForm name="driver" control={control} type={1} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -313,10 +356,10 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ pk, open, action, handleOk,
         </Row>
       </Form>
 
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" style={{ padding: "0px" }}>
         <Tabs.TabPane tab="Работы" key="1">
           <Form.Item>
-            <TableOrderWorksForm name="works" control={control} editMode={editMode} />
+            <TableOrderWorksForm name="works" control={control} editMode={editMode} dateRequest={dateRequestData} />
           </Form.Item>
         </Tabs.TabPane>
         <Tabs.TabPane disabled tab="Материалы" key="2">

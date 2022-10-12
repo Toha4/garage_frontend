@@ -18,6 +18,7 @@ const showDeleteConfirmDialog = ({ title, content, onOk, onCancel }: IshowDelete
     cancelText: "Нет",
     onOk: onOk,
     onCancel: onCancel,
+    centered: true,
   });
 };
 

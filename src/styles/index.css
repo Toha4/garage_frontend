@@ -29,6 +29,7 @@ code {
 @import 'components/user.css';
 @import 'components/header-menu.css';
 @import 'components/not-found.css';
+@import 'components/order-form.css';
 
 
 @font-face {
@@ -74,4 +75,33 @@ code {
 
 .ant-modal-body {
   padding: 16px !important;
+}
+
+.table-handbook td {
+  padding: 2px 2px !important;
+}
+
+.table-order-works td {
+  padding: 0px 0px !important;
+}
+
+.table-order-works th {
+  padding: 2px 8px !important;
+}
+
+.ant-tabs-tab {
+  padding: 6px 0 !important;
+}
+
+.editable-cell-value-wrap {
+  padding-right: 0px !important;
+  padding: 5px 12px;
+  cursor: pointer;
+  min-height: 32px;
+}
+
+.editable-row:hover .editable-cell-value-wrap {
+  padding: 4px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
 }

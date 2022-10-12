@@ -10,9 +10,10 @@ interface ISelectCar {
   name: string;
   control: any;
   onChange?: (value: any, option: any) => void;
+  dateRequest?: moment.Moment;
 }
 
-const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange }) => {
+const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange, dateRequest }) => {
   const DataCarService = new CarService();
 
   const [cars, setCar] = React.useState<CarShortType[]>();
@@ -26,8 +27,13 @@ const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange }) => {
       alert(error);
     };
 
-    DataCarService.getCars().then(onDataLoaded).catch(onError);
-  }, []);
+    let params = {};
+    if (dateRequest) {
+      params = {date_request: dateRequest.format("DD.MM.YYYY")}
+    }
+
+    DataCarService.getCars(params).then(onDataLoaded).catch(onError);
+  }, [dateRequest]);
 
   return (
     <Controller

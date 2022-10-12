@@ -10,9 +10,10 @@ interface ISelectStatus {
   name: string;
   control: any;
   type: number;
+  dateRequest?: moment.Moment;
 }
 
-const SelectEmployeeForm: React.FC<ISelectStatus> = ({ name, control, type }) => {
+const SelectEmployeeForm: React.FC<ISelectStatus> = ({ name, control, type, dateRequest }) => {
   const DataEmployeeService = new EmployeeService();
 
   const [employees, setEmployee] = React.useState<EmployeeShortType[]>();
@@ -26,7 +27,12 @@ const SelectEmployeeForm: React.FC<ISelectStatus> = ({ name, control, type }) =>
       alert(error);
     };
 
-    DataEmployeeService.getEmployees({ type }).then(onDataLoaded).catch(onError);
+    let params: any = {type: type};
+    if (dateRequest) {
+      params.date_request = dateRequest.format("DD.MM.YYYY")
+    }
+
+    DataEmployeeService.getEmployees(params).then(onDataLoaded).catch(onError);
   }, []);
 
   return (

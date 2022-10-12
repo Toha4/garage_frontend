@@ -34,7 +34,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
   }, []);
 
   const setValueDefalt = () => {
-    // TODO: Сделать сохранение фильтов в localStorage
+    // TODO: Make save filter in localStorage
     setValue("general_search", "");
     setValue("reason_type", undefined);
     setValue("statuses", undefined);

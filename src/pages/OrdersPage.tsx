@@ -183,9 +183,9 @@ const OrdersPage: React.FC = () => {
     <>
       {modalOpen && (
         <OrderModalForm
-          pk={modalAction === ActionTypes.EDIT ? dataSource[index].pk : null}
+          orderPk={modalAction === ActionTypes.EDIT ? dataSource[index].pk : null}
           open={modalOpen}
-          action={modalAction}
+          actionForm={modalAction}
           handleOk={handleOk}
           handleCancel={handleCancel}
         />
@@ -227,7 +227,7 @@ const OrdersPage: React.FC = () => {
           y: "calc(100vh - 310px)",
           scrollToFirstRowOnChange: true,
         }}
-        locale={{ emptyText: "Нет данных" }}
+        locale={{ emptyText: "Заказ-наряды не найдены" }}
       />
     </>
   );

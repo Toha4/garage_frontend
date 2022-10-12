@@ -24,8 +24,9 @@ export type OrderShortType = {
 };
 
 export type OrderWorkMechanics = {
-  pk?: number;
+  pk: number | null;
   mechanic: number;
+  mechanic_short_fio?: string;
   time_minutes: number | null;
 };
 
@@ -66,12 +67,6 @@ export type ReasonType = {
   delete_forbidden?: boolean;
 };
 
-export type EmployeeShortType = {
-  pk: number;
-  short_fio: string;
-  type: number;
-};
-
 export type EmployeeType = {
   pk: number;
   number_in_kadry: number;
@@ -84,11 +79,7 @@ export type EmployeeType = {
   date_dismissal: string;
 };
 
-export type CarShortType = {
-  pk: number;
-  state_number: string;
-  name: string;
-};
+export type EmployeeShortType = Pick<EmployeeType, "pk" | "short_fio" | "type">;
 
 export type CarType = {
   pk: number;
@@ -100,6 +91,8 @@ export type CarType = {
   driver_pk: number;
   date_decommissioned: string;
 };
+
+export type CarShortType = Pick<CarType, "pk" | "state_number" | "name">;
 
 export type PostType = {
   pk?: number;

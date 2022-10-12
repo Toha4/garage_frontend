@@ -1,14 +1,23 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Layout, Menu, MenuProps } from "antd";
-import { AppstoreAddOutlined, FileTextOutlined, HomeOutlined, ToolOutlined } from "@ant-design/icons";
+import {
+  AppstoreAddOutlined,
+  FileTextOutlined,
+  HomeOutlined,
+  ToolOutlined,
+} from "@ant-design/icons";
 import User from "./User";
+import { IUser } from "../services/AuthService";
 
 const { Header } = Layout;
 
+interface IHeaderMenu {
+  user: IUser | null;
+}
 
-const HeaderMenu: React.FC = () => {
-  const { pathname } = useLocation()
+const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
+  const { pathname } = useLocation();
 
   const menuItems: MenuProps["items"] = [
     {
@@ -65,10 +74,10 @@ const HeaderMenu: React.FC = () => {
             selectedKeys={[pathname]}
           />
         </div>
-        <User />
+        <User user={user} />
       </div>
     </Header>
   );
-}
+};
 
 export default HeaderMenu;

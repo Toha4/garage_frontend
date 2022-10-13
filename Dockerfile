@@ -1,5 +1,5 @@
 # Stage 0, "build"
-FROM node:14.15.1-alpine as build
+FROM node:16.17.1-alpine as build
 
 ARG REACT_APP_API_URL
 

@@ -233,7 +233,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
     DataCarService.getCar(value)
       .then((data: CarType) => {
         setValue("car_name", data.name);
-        if (watch("driver") === undefined) {
+        if (watch("driver") === null) {
           setValue("driver", data.driver_pk);
         }
       })

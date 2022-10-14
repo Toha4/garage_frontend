@@ -32,7 +32,6 @@ interface IOrderModalForm {
 
 const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, handleOk, handleCancel }) => {
   const user = React.useContext(UserContext);
-  const editMode: boolean = user ? user.edit_access : false;
 
   const DataOrderService = new OrderService();
   const DataCarService = new CarService();
@@ -241,8 +240,12 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
   };
 
   const isShowRemoveButton = (): boolean => {
-    return user?.is_superuser || (pk !== null && Number(watch("status")) === Status.REQUEST);
+    return pk !== null && (user?.is_superuser || Number(watch("status")) === Status.REQUEST);
   };
+
+  const edit_access = user ? user.edit_access : false;
+  const is_superuser = user ? user.is_superuser : false;
+  const editMode: boolean = (edit_access && orderData?.status !== Status.COMPLETED) || is_superuser;
 
   const dateRequestData = watch("date_begin");
 

@@ -17,7 +17,7 @@ export const Status = {
 };
 
 export const StatusNames = {
-  [Status.REQUEST]: "Заяка",
+  [Status.REQUEST]: "Заявка",
   [Status.WORK]: "В работе",
   [Status.COMPLETED]: "Выполнен",
 };

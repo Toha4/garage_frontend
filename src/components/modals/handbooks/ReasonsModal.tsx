@@ -6,7 +6,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ReasonService from "../../../services/ReasonService";
 import { ReasonTypeNames } from "../../../helpers/constants";
 import ReasonModalForm from "../../forms/ReasonModalForm";
-import showDeleteConfirmDialog from "../../common/DeleteDialog";
+import showConfirmDialog from "../../common/ConfirmDialog";
 
 interface IReasonsModal {
   open: boolean;
@@ -69,7 +69,7 @@ const ReasonsModal: React.FC<IReasonsModal> = ({ open, onOk, onCancel }) => {
   const handleDeleteReason = (pk: number | undefined) => {
     const name = dataSource.find((item) => pk === item.pk)?.name;
 
-    showDeleteConfirmDialog({
+    showConfirmDialog({
       title: `Вы уверены, что хотите удалить причину "${name}"?`,
       onOk: () => {
         if (pk) {
@@ -141,10 +141,7 @@ const ReasonsModal: React.FC<IReasonsModal> = ({ open, onOk, onCancel }) => {
       ]}
     >
       {modalFormOpen && (
-      <ReasonModalForm pk={editPk}
-      open={modalFormOpen}
-      onOk={handleOkForm}
-      onCancel={handleCancelForm}/>
+        <ReasonModalForm pk={editPk} open={modalFormOpen} onOk={handleOkForm} onCancel={handleCancelForm} />
       )}
 
       <div style={{ display: "flex" }}>

@@ -7,7 +7,7 @@ import { QuestionCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import { EditableCell, EditableRow } from "./EditTable";
 import { convertValueToDuration } from "../../../common/InputTimeDuration";
 import InputTimeDuratiomHelper from "../../../common/InputTimeDuration/InputTimeDuratiomHelper";
-import showDeleteConfirmDialog from "../../../common/DeleteDialog";
+import showConfirmDialog from "../../../common/ConfirmDialog";
 import InputWorkMechanicsHelper from "../../../common/InputWorkMechanics/InputWorkMechanicsHelper";
 
 interface ITableOrderWorks {
@@ -47,7 +47,7 @@ const TableOrderWorks: React.FC<ITableOrderWorks> = ({ value, onChange, editMode
   const handleRemoveOrderWork = (work: number | null) => {
     const index = value.findIndex((item) => work === item.work);
     if (index >= 0) {
-      showDeleteConfirmDialog({
+      showConfirmDialog({
         title: `Вы уверены, что хотите удалить работу "${value[index].work_name}"?`,
         onOk: () => {
           value.splice(index, 1);

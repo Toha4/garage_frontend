@@ -32,7 +32,7 @@ class WorkService extends BaseService {
     return await this.deleteResource(`${this._apiURLWork}${pk}`);
   };  
 
-  geWorktCategoryes = async (params = {}) => {
+  getWorkCategoryes = async (params = {}) => {
     return await this.getResource(this._apiURLWorkCategory, params);
   };
 

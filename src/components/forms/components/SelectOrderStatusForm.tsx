@@ -5,12 +5,12 @@ import { StatusNames } from "../../../helpers/constants";
 
 const { Option } = Select;
 
-interface ISelectStatus {
+interface ISelectOrderStatusForm {
   name: string;
   control: any;
 }
 
-const SelectOrderStatusForm: React.FC<ISelectStatus> = ({ name, control }) => {
+const SelectOrderStatusForm: React.FC<ISelectOrderStatusForm> = ({ name, control }) => {
   const status_options: any = [];
   for (const [key, value] of Object.entries(StatusNames)) {
     status_options.push(

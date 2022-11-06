@@ -6,12 +6,12 @@ import { PostType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectStatus {
+interface ISelectPostForm {
   name: string;
   control: any;
 }
 
-const SelectPostForm: React.FC<ISelectStatus> = ({ name, control }) => {
+const SelectPostForm: React.FC<ISelectPostForm> = ({ name, control }) => {
   const DataPostService = new PostService();
 
   const [posts, setPosts] = React.useState<PostType[]>();

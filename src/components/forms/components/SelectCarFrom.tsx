@@ -6,14 +6,14 @@ import { CarShortType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectCar {
+interface ISelectCarForm {
   name: string;
   control: any;
   onChange?: (value: any, option: any) => void;
   dateRequest?: moment.Moment;
 }
 
-const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange, dateRequest }) => {
+const SelectCarForm: React.FC<ISelectCarForm> = ({ name, control, onChange, dateRequest }) => {
   const DataCarService = new CarService();
 
   const [cars, setCar] = React.useState<CarShortType[]>();
@@ -29,7 +29,7 @@ const SelectCarForm: React.FC<ISelectCar> = ({ name, control, onChange, dateRequ
 
     let params = {};
     if (dateRequest) {
-      params = {date_request: dateRequest.format("DD.MM.YYYY")}
+      params = { date_request: dateRequest.format("DD.MM.YYYY") };
     }
 
     DataCarService.getCars(params).then(onDataLoaded).catch(onError);

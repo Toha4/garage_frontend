@@ -3,14 +3,23 @@ import { DatePicker } from "antd";
 import { Controller } from "react-hook-form";
 import moment from "moment";
 
-interface ISelectStatus {
+interface IDateTimePickerForm {
   name: string;
   control: any;
   onChange?: (date: moment.Moment, dateString: string) => void;
   required?: boolean;
+  width?: string | number | undefined;
+  disable?: boolean;
 }
 
-const DatePickerForm: React.FC<ISelectStatus> = ({ name, control, onChange, required = false }) => {
+const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
+  name,
+  control,
+  onChange,
+  required = false,
+  width = undefined,
+  disable,
+}) => {
   return (
     <Controller
       name={name}
@@ -19,8 +28,9 @@ const DatePickerForm: React.FC<ISelectStatus> = ({ name, control, onChange, requ
         <DatePicker
           allowClear={!required}
           placeholder="Выберите дату"
-          showTime={{ format: "HH:mm" }}
-          format="DD.MM.YYYY HH:mm"
+          format="DD.MM.YYYY"
+          style={{ width: width }}
+          disabled={disable}
           {...field}
           onChange={(date: any, dateString: string) => {
             if (onChange) onChange(date, dateString);
@@ -32,4 +42,4 @@ const DatePickerForm: React.FC<ISelectStatus> = ({ name, control, onChange, requ
   );
 };
 
-export default DatePickerForm;
+export default DateTimePickerForm;

@@ -6,12 +6,12 @@ import { WorkCategoryType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectCategory {
+interface ISelectWorkCategoryForm {
   name: string;
   control: any;
 }
 
-const SelectCategoryForm: React.FC<ISelectCategory> = ({ name, control }) => {
+const SelectWorkCategoryForm: React.FC<ISelectWorkCategoryForm> = ({ name, control }) => {
   const DataWorkService = new WorkService();
 
   const [categoryes, setCategoryes] = React.useState<WorkCategoryType[]>();
@@ -25,7 +25,7 @@ const SelectCategoryForm: React.FC<ISelectCategory> = ({ name, control }) => {
       alert(error);
     };
 
-    DataWorkService.geWorktCategoryes().then(onDataLoaded).catch(onError);
+    DataWorkService.getWorkCategoryes().then(onDataLoaded).catch(onError);
   }, []);
 
   return (
@@ -53,4 +53,4 @@ const SelectCategoryForm: React.FC<ISelectCategory> = ({ name, control }) => {
   );
 };
 
-export default SelectCategoryForm;
+export default SelectWorkCategoryForm;

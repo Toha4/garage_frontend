@@ -21,6 +21,10 @@ class CarService extends BaseService {
   updateCar = async (pk: number, car: CarType) => {
     return await this.updateResourceJSON(`${this._apiURL}${pk}`, car);
   };
+
+  getCarsTags = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}tags/`, params);
+  };
 }
 
 export default CarService;

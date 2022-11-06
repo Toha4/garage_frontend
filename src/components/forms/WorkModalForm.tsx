@@ -6,7 +6,7 @@ import { WorkType } from "../../services/types";
 import WorkService from "../../services/WorkService";
 import { IFormWorkInputs } from "../interface";
 import InputForm from "./components/InputForm";
-import SelectCategoryForm from "./components/SelectCategoryFrom";
+import SelectWorkCategoryForm from "./components/SelectWorkCategoryForm";
 
 interface IWorkModalForm {
   pk: number | null;
@@ -64,12 +64,11 @@ const WorkModalForm: React.FC<IWorkModalForm> = ({ pk, open, onOk, onCancel }) =
     };
 
     const onFailed = (error: any) => {
-      if (error.response.data?.name[0] === "Работа с таким Наименование уже существует.") {
-        setError("name", { type: 'custom', message: "Работа с таким наименованием уже существует!" })
-      }
-      else {
+      if (error.response.data?.name && error.response.data?.name[0] === "Работа с таким Наименование уже существует.") {
+        setError("name", { type: "custom", message: "Работа с таким наименованием уже существует!" });
+      } else {
         alert(error.responseText);
-      }      
+      }
     };
 
     if (action === ActionTypes.EDIT && pk) {
@@ -95,21 +94,20 @@ const WorkModalForm: React.FC<IWorkModalForm> = ({ pk, open, onOk, onCancel }) =
       >
         <Form layout="vertical">
           <Form.Item
-            label="Категория"
-            required
-            validateStatus={errors.category ? "error" : "success"}
-            help={errors.category ? errors.category.message : null}
-          >
-            <SelectCategoryForm name="category" control={control} />
-          </Form.Item>
-
-          <Form.Item
             label="Наименование"
             required
             validateStatus={errors.name ? "error" : "success"}
             help={errors.name ? errors.name.message : null}
           >
-            <InputForm name="name" control={control} />
+            <InputForm name="name" maxLength={32} control={control} />
+          </Form.Item>
+          <Form.Item
+            label="Категория"
+            required
+            validateStatus={errors.category ? "error" : "success"}
+            help={errors.category ? errors.category.message : null}
+          >
+            <SelectWorkCategoryForm name="category" control={control} />
           </Form.Item>
         </Form>
       </Modal>

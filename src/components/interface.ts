@@ -1,6 +1,5 @@
 import { FilterValue, SortOrder, TablePaginationConfig } from "antd/lib/table/interface";
-import { type } from "os";
-import { OrderWorkType } from "../services/types";
+import { TurnoverNestedOrderType, OrderWorkType, TurnoverNestedType } from "../services/types";
 
 export interface ITableParams {
   pagination?: TablePaginationConfig;
@@ -23,6 +22,7 @@ export interface IFormOrderInputs {
   odometer: number | null;
   note: string;
   works: OrderWorkType[] | null;
+  materials: TurnoverNestedOrderType[] | null;
 }
 
 export interface IFormWorkInputs {
@@ -41,4 +41,46 @@ export interface IFormReasonInputs {
 
 export interface IFormPostInputs {
   name: string;
+}
+
+export interface IFormMaterialInputs {
+  unit: number;
+  category: number;
+  name: string;
+  article_number: string | null;
+  compatbility: string[];
+}
+
+export interface IFormMaterialCategoryInputs {
+  name: string;
+}
+
+export interface IFormWarehouseInputs {
+  name: string;
+}
+
+export interface IFormEntranceInputs {
+  date: any;
+  document_number: string;
+  responsible: number;
+  provider: string;
+  note: string;
+  materials: TurnoverNestedType[];
+}
+
+export interface IFormCorrectionTurnoverInputs {
+  type: number;
+  warehouse: number;
+  quantity: number;
+  price: number;
+  sum: number | string;
+  note: string;
+}
+
+export interface IFormMovingTurnoverInputs {
+  warehouse_outgoing: number;
+  warehouse_incoming: number;  
+  quantity: number;
+  price: number | string;
+  sum: number | string;
 }

@@ -68,4 +68,4 @@ jobs:
             docker stop $(docker ps -q --filter ancestor=mupts/garage_frontend)
             docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_ACCESS_TOKEN
             docker pull mupts/garage_frontend:latest
-            docker run -e BACKEND=$REACT_APP_API_URL --rm -d -p 5003:80 mupts/garage_frontend:latest
+            docker run -e BACKEND=$REACT_APP_API_URL --restart unless-stopped -d -p 5003:80 mupts/garage_frontend:latest

@@ -1,12 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Layout, Menu, MenuProps } from "antd";
-import {
-  AppstoreAddOutlined,
-  FileTextOutlined,
-  HomeOutlined,
-  ToolOutlined,
-} from "@ant-design/icons";
+import { AppstoreAddOutlined, FileTextOutlined, HomeOutlined, ToolOutlined } from "@ant-design/icons";
 import User from "./User";
 import { IUser } from "../services/AuthService";
 
@@ -28,8 +23,17 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
     {
       key: "/warehouse",
       icon: <HomeOutlined />,
-      label: <Link to="/warehouse"> Склад </Link>,
-      disabled: true,
+      label: "Склад",
+      children: [
+        {
+          key: "/warehouse-remains",
+          label: <Link to="/warehouse-remains"> Материалы </Link>,
+        },
+        {
+          key: "/warehouse-entrance",
+          label: <Link to="warehouse-entrance"> Поступления </Link>,
+        },
+      ],
     },
     {
       key: "3",
@@ -58,7 +62,7 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
     {
       key: "/handbooks",
       icon: <AppstoreAddOutlined />,
-      label: <Link to="/handbooks"> Справочник </Link>,
+      label: <Link to="/handbooks"> Справочники </Link>,
     },
   ];
 

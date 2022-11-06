@@ -6,7 +6,7 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import WorkModalForm from "../../forms/WorkModalForm";
-import showDeleteConfirmDialog from "../../common/DeleteDialog";
+import showConfirmDialog from "../../common/ConfirmDialog";
 import WorkCategoryModalForm from "../../forms/WorkCategoryModalForm";
 
 interface IWorksModal {
@@ -71,7 +71,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
     if (updateCategory) {
       setLoadingCategory(true);
 
-      DataWorkService.geWorktCategoryes().then(onDataLoaded).catch(onError).finally(onFinally);
+      DataWorkService.getWorkCategoryes().then(onDataLoaded).catch(onError).finally(onFinally);
     }
   }, [updateCategory]);
 
@@ -112,63 +112,62 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
     }
   }, [search]);
 
-  const columns: ColumnsType<IWorkCategoryTable> =
-    selectMode
-      ? [
-          {
-            title: "Наименование",
-            dataIndex: "name",
-            key: "name",
-          },
-        ]
-      : [
-          {
-            title: "Наименование",
-            dataIndex: "name",
-            key: "name",
-          },
-          {
-            title: "Действия",
-            dataIndex: "action",
-            key: "action",
-            width: 105,
-            render: (_, record) => {
-              return "children" in record ? (
-                // Редактирвоание категорий
-                <Space size={5}>
-                  <Button className="action-button" type="link" onClick={() => handleEditCategory(record)}>
-                    <EditOutlined />
+  const columns: ColumnsType<IWorkCategoryTable> = selectMode
+    ? [
+        {
+          title: "Наименование",
+          dataIndex: "name",
+          key: "name",
+        },
+      ]
+    : [
+        {
+          title: "Наименование",
+          dataIndex: "name",
+          key: "name",
+        },
+        {
+          title: "Действия",
+          dataIndex: "action",
+          key: "action",
+          width: 105,
+          render: (_, record) => {
+            return "children" in record ? (
+              // Редактирвоание категорий
+              <Space size={5}>
+                <Button className="action-button" type="link" onClick={() => handleEditCategory(record)}>
+                  <EditOutlined />
+                </Button>
+                {!(record.work_count !== undefined && record.work_count > 0) && (
+                  <Button className="action-button" type="link" onClick={() => handleDeleteCategory(record)}>
+                    <DeleteOutlined />
                   </Button>
-                  {!(record.work_count !== undefined && record.work_count > 0) && (
-                    <Button className="action-button" type="link" onClick={() => handleDeleteCategory(record)}>
-                      <DeleteOutlined />
-                    </Button>
-                  )}
-                </Space>
-              ) : (
-                // Редактирвоание работ
-                <Space size={5} style={{ paddingLeft: "30px" }}>
+                )}
+              </Space>
+            ) : (
+              // Редактирвоание работ
+              <Space size={5} style={{ paddingLeft: "30px" }}>
+                <Button
+                  className="action-button"
+                  type="link"
+                  onClick={() => handleEditWork(record as any as IWorkTable)}
+                >
+                  <EditOutlined />
+                </Button>
+                {!(record as any as IWorkTable).delete_forbidden && (
                   <Button
                     className="action-button"
                     type="link"
-                    onClick={() => handleEditWork(record as any as IWorkTable)}
+                    onClick={() => handleDeleteWork(record as any as IWorkTable)}
                   >
-                    <EditOutlined />
+                    <DeleteOutlined />
                   </Button>
-                  {!(record as any as IWorkTable).delete_forbidden && (
-                    <Button
-                      className="action-button"
-                      type="link"
-                      onClick={() => handleDeleteWork(record as any as IWorkTable)}
-                    >
-                      <DeleteOutlined />
-                    </Button>
-                  )}
-                </Space>
-              );
-            },
+                )}
+              </Space>
+            );
           },
-        ];
+        },
+      ];
 
   const rowSelection: TableRowSelection<IWorkCategoryTable> = {
     checkStrictly: false,
@@ -223,7 +222,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
   };
 
   const handleDeleteWork = (record: IWorkTable) => {
-    showDeleteConfirmDialog({
+    showConfirmDialog({
       title: `Вы уверены, что хотите удалить работу "${record.name}"?`,
       onOk: () => {
         if (record?.pk) {
@@ -258,7 +257,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
   };
 
   const handleDeleteCategory = (record: IWorkCategoryTable) => {
-    showDeleteConfirmDialog({
+    showConfirmDialog({
       title: `Вы уверены, что хотите удалить категорию "${record.name}"?`,
       onOk: () => {
         if (record?.pk) {

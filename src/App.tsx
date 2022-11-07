@@ -27,11 +27,11 @@ function App() {
             <Content style={{ marginTop: isLogged ? "56px" : "0px", textAlign: "start" }} >
               <Routes>
                 <Route path="/login" element={isLogged === false ? <LoginForm /> : <Navigate to="/" />} />
-                <Route path="/" element={<PrivateRoute user={user} component={OrdersPage} />} />
-                <Route path="/warehouse-remains" element={<PrivateRoute user={user} component={WarehouseRemainsPage} />} />
-                <Route path="/warehouse-entrance" element={<PrivateRoute user={user} component={WarehouseEntrancePage} />} />
+                <Route path="/" element={<PrivateRoute user={user} component={OrdersPage} title="Заказ-наряды"/>} />
+                <Route path="/warehouse-remains" element={<PrivateRoute user={user} component={WarehouseRemainsPage} title="Материалы"/>} />
+                <Route path="/warehouse-entrance" element={<PrivateRoute user={user} component={WarehouseEntrancePage} title="Поступления"/>} />
                 {/* <Route path="/report-vehicles" element={<PrivateRoute component={ReportVehiclesPage} />} /> */}
-                <Route path="/handbooks" element={<PrivateRoute user={user} component={HandbooksPage} />} />
+                <Route path="/handbooks" element={<PrivateRoute user={user} component={HandbooksPage} title="Справочники"/>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Content>

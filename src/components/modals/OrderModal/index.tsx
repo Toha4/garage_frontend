@@ -261,6 +261,15 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
   const dateRequestData = watch("date_begin");
   const defaultCompatbility = watch("car_name");
 
+  let is_decommissioned_materials = false;
+  if (orderPk !== null && orderData?.turnovers_from_order) {
+    for (const material of orderData.turnovers_from_order) {
+      if (material.pk !== null) {
+        is_decommissioned_materials = true;
+      }
+    }
+  }
+
   return (
     <Modal
       title={getTitle()}
@@ -275,6 +284,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
                 danger
                 key="delete"
                 type="primary"
+                disabled={is_decommissioned_materials}
                 style={{
                   display: isShowRemoveButton() ? "inherit" : "none",
                   float: "left",

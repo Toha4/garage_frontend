@@ -6,15 +6,15 @@ import TurnoverService from "../../services/TurnoverService";
 import { TurnoverNestedType } from "../../services/types";
 
 interface IEntranceMaterialTable {
-  entrance_id: number;
-  update_id?: number | null;
+  entrance_pk: number;
+  update_pk?: number | null;
 }
 
 interface ITurnoverMaterialTable extends TurnoverNestedType {
   pk: number;
 }
 
-const EntranceMaterialTable: React.FC<IEntranceMaterialTable> = ({ entrance_id, update_id }) => {
+const EntranceMaterialTable: React.FC<IEntranceMaterialTable> = ({ entrance_pk, update_pk }) => {
   const DataTurnoverService = new TurnoverService();
 
   const [dataSource, setDataSource] = React.useState<ITurnoverMaterialTable[]>([]);
@@ -25,10 +25,10 @@ const EntranceMaterialTable: React.FC<IEntranceMaterialTable> = ({ entrance_id, 
   }, []);
 
   React.useEffect(() => {
-    if (entrance_id === update_id) {
+    if (entrance_pk === update_pk) {
       loadingData();
     }
-  }, [entrance_id, update_id]);
+  }, [entrance_pk, update_pk]);
 
   const loadingData = () => {
     const onDataLoaded = (result: ITurnoverMaterialTable[]) => {
@@ -45,7 +45,7 @@ const EntranceMaterialTable: React.FC<IEntranceMaterialTable> = ({ entrance_id, 
 
     setLoading(true);
 
-    DataTurnoverService.getTurnovers({ entrance_id }).then(onDataLoaded).catch(onError).finally(onFinally);
+    DataTurnoverService.getTurnovers({ entrance_pk }).then(onDataLoaded).catch(onError).finally(onFinally);
   };
 
   const columns: ColumnsType<ITurnoverMaterialTable> = [

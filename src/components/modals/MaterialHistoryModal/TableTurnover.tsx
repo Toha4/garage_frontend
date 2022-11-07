@@ -10,7 +10,7 @@ import EntranceModalForm from "../EntranceModal";
 import OrderModalForm from "../OrderModal";
 
 interface ITableTurnover {
-  materialId: number;
+  materialPk: number;
   filterType?: number;
   filterWarehouse?: number;
   update: boolean;
@@ -25,7 +25,7 @@ const TableParamsDefault: ITableParams = {
   search: {},
 };
 
-const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filterWarehouse, update, setUpdate }) => {
+const TableTurnover: React.FC<ITableTurnover> = ({ materialPk, filterType, filterWarehouse, update, setUpdate }) => {
   const DataTurnoverService = new TurnoverService();
 
   const [data, setData] = React.useState<TurnoverMaterialType[]>([]);
@@ -33,9 +33,9 @@ const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filte
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const [entranceOpenModal, setEntranceOpenModal] = React.useState<boolean>(false);
-  const [entranceIdOpen, setEntranceIdOpen] = React.useState<number | null>(null);
+  const [entrancePkOpen, setEntrancePkOpen] = React.useState<number | null>(null);
   const [orderOpenModal, setOrderOpenModal] = React.useState<boolean>(false);
-  const [orderIdOpen, setOrderIdOpen] = React.useState<number | null>(null);
+  const [orderPkOpen, setOrderPkOpen] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     const onDataLoaded = ({ page_size, count, numbers, results }: ResultResursePagation<TurnoverMaterialType>) => {
@@ -63,7 +63,7 @@ const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filte
       setLoading(true);
 
       DataTurnoverService.getTurnoversMaterial({
-        material_id: materialId,
+        material_pk: materialPk,
         turnover_type: filterType,
         warehouse: filterWarehouse,
         page: tableParams.pagination?.current,
@@ -92,23 +92,23 @@ const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filte
     setUpdate(true);
   };
 
-  const handleOpenEntrance = (entrance_id: number) => {
-    setEntranceIdOpen(entrance_id);
+  const handleOpenEntrance = (entrance_pk: number) => {
+    setEntrancePkOpen(entrance_pk);
     setEntranceOpenModal(true);
   };
 
   const handleCloseEntrance = () => {
-    setEntranceIdOpen(null);
+    setEntrancePkOpen(null);
     setEntranceOpenModal(false);
   };
 
-  const handleOpenOrder = (order_id: number) => {
-    setOrderIdOpen(order_id);
+  const handleOpenOrder = (order_pk: number) => {
+    setOrderPkOpen(order_pk);
     setOrderOpenModal(true);
   };
 
   const handleCloseOrder = () => {
-    setOrderIdOpen(null);
+    setOrderPkOpen(null);
     setOrderOpenModal(false);
   };
 
@@ -186,17 +186,17 @@ const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filte
       {entranceOpenModal && (
         <EntranceModalForm
           readOnlyMode
-          entrance_pk={entranceIdOpen}
+          entrance_pk={entrancePkOpen}
           open={entranceOpenModal}
           action={ActionTypes.EDIT}
           handleOk={handleCloseEntrance}
           handleCancel={handleCloseEntrance}
         />
       )}
-      {orderOpenModal && orderIdOpen && (
+      {orderOpenModal && orderPkOpen && (
         <OrderModalForm
           readOnlyMode
-          orderPk={orderIdOpen}
+          orderPk={orderPkOpen}
           open={orderOpenModal}
           actionForm={ActionTypes.EDIT}
           handleOk={handleCloseOrder}
@@ -209,7 +209,7 @@ const TableTurnover: React.FC<ITableTurnover> = ({ materialId, filterType, filte
         bordered
         size="small"
         loading={loading}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.pk}
         columns={columns}
         dataSource={data}
         onChange={handleTableChange}

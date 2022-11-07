@@ -11,7 +11,7 @@ import moment from "moment";
 import showConfirmDialog from "../common/ConfirmDialog";
 
 interface IMovingMaterialModalForm {
-  materialId: number;
+  materialPk: number;
   materialName: string;
   unit_name: string;
   unit_is_precision_point: boolean;
@@ -24,7 +24,7 @@ interface IMovingMaterialModalForm {
 }
 
 const MovingMaterialModalForm: React.FC<IMovingMaterialModalForm> = ({
-  materialId,
+  materialPk,
   materialName,
   unit_name,
   unit_is_precision_point,
@@ -71,7 +71,7 @@ const MovingMaterialModalForm: React.FC<IMovingMaterialModalForm> = ({
 
   const onSubmit = (data: IFormMovingTurnoverInputs) => {
     const moving_data: TurnoverMovingMaterialType = {
-      material: materialId,
+      material: materialPk,
       date: moment().format("DD.MM.YYYY"),
       warehouse_outgoing: data.warehouse_outgoing,
       warehouse_incoming: data.warehouse_incoming,

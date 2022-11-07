@@ -194,7 +194,7 @@ export interface TurnoverNestedWriteType
 }
 
 export type TurnoverMaterialType = {
-  id: number;
+  pk: number;
   type: number;
   date: string;
   is_correction: boolean;
@@ -239,7 +239,7 @@ export type WarehousesAvailability = {
 };
 
 export type MaterialRemainsType = {
-  id: number;
+  pk: number;
   name: string;
   category: number;
   category_name: string;
@@ -255,7 +255,7 @@ export type MaterialRemainsType = {
 };
 
 export type MaterialRemainsWarehouseType = {
-  id: number;
+  pk: number;
   name: string;
   category: number;
   unit_name: string;
@@ -274,7 +274,7 @@ export type PricesType = {
 };
 
 export type MaterialAvailabilityType = {
-  id: number;
+  pk: number;
   name: string;
   unit_name: string;
   unit_is_precision_point: boolean;

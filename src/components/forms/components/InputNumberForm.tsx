@@ -9,6 +9,10 @@ interface IInputNumberForm {
   controls?: boolean;
   placeholder?: string;
   min?: number;
+  max?: number;
+  precision?: number;
+  width?: string | number;
+  onChange?: (value: any) => void;
 }
 
 const InputNumberForm: React.FC<IInputNumberForm> = ({
@@ -17,7 +21,11 @@ const InputNumberForm: React.FC<IInputNumberForm> = ({
   required = false,
   controls = true,
   placeholder = "",
-  min=0
+  min = 0,
+  max,
+  precision,
+  width,
+  onChange,
 }) => {
   return (
     <Controller
@@ -28,9 +36,15 @@ const InputNumberForm: React.FC<IInputNumberForm> = ({
           required={required}
           controls={controls}
           placeholder={placeholder}
+          precision={precision}
           min={min}
-          style={{ width: "100%" }}
+          max={max}
+          style={{ width: width || "100%" }}
           {...field}
+          onChange={(value) => {
+            field.onChange(value);
+            if (onChange) onChange(value);
+          }}
         />
       )}
     />

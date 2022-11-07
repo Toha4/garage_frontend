@@ -6,12 +6,12 @@ import { ReasonType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectStatus {
+interface ISelectReasonForm {
   name: string;
   control: any;
 }
 
-const SelectReasonForm: React.FC<ISelectStatus> = ({ name, control }) => {
+const SelectReasonForm: React.FC<ISelectReasonForm> = ({ name, control }) => {
   const DataReasonService = new ReasonService();
 
   const [reasons, setReasons] = React.useState<ReasonType[]>();

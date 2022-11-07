@@ -84,14 +84,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
             },
           ]}
         >
-          <InputNumber
-            ref={inputRef as any}
-            size="small"
-            style={{ width: "65px" }}
-            min={1}
-            onPressEnter={change}
-            onBlur={change}
-          />
+          <InputNumber ref={inputRef as any} style={{ width: "65px" }} min={1} onPressEnter={change} onBlur={change} />
         </Form.Item>
       );
     } else if (dataIndex === "mechanics" && editing) {

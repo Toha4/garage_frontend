@@ -21,3 +21,13 @@ export const StatusNames = {
   [Status.WORK]: "В работе",
   [Status.COMPLETED]: "Выполнен",
 };
+
+export const TurnoverTypes = {
+  COMING: 1,
+  EXPENSE: 2,
+};
+
+export const TurnoverTypesNames = {
+  [TurnoverTypes.COMING]: "Приход",
+  [TurnoverTypes.EXPENSE]: "Расход",
+};

@@ -6,14 +6,14 @@ import { EmployeeShortType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectStatus {
+interface ISelectEmployeeForm {
   name: string;
   control: any;
   type: number;
   dateRequest?: moment.Moment;
 }
 
-const SelectEmployeeForm: React.FC<ISelectStatus> = ({ name, control, type, dateRequest }) => {
+const SelectEmployeeForm: React.FC<ISelectEmployeeForm> = ({ name, control, type, dateRequest }) => {
   const DataEmployeeService = new EmployeeService();
 
   const [employees, setEmployee] = React.useState<EmployeeShortType[]>();
@@ -27,9 +27,9 @@ const SelectEmployeeForm: React.FC<ISelectStatus> = ({ name, control, type, date
       alert(error);
     };
 
-    let params: any = {type: type};
+    let params: any = { type: type };
     if (dateRequest) {
-      params.date_request = dateRequest.format("DD.MM.YYYY")
+      params.date_request = dateRequest.format("DD.MM.YYYY");
     }
 
     DataEmployeeService.getEmployees(params).then(onDataLoaded).catch(onError);

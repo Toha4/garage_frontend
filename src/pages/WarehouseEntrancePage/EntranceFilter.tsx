@@ -1,12 +1,9 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { Form, Button, Select, Input, DatePicker } from "antd";
-import { ITableParams } from "./interface";
-import { ReasonTypeNames, StatusNames } from "../helpers/constants";
+import { Form, Button, Input, DatePicker } from "antd";
+import { ITableParams } from "../../components/interface";
 
-const { Option } = Select;
-
-interface IOrdersFilter {
+interface IEntranceFilter {
   tableParams: ITableParams;
   setTableParams: Dispatch<SetStateAction<ITableParams>>;
   updateTable: Dispatch<SetStateAction<boolean>>;
@@ -14,19 +11,15 @@ interface IOrdersFilter {
 
 interface IFormInputs {
   general_search: string;
-  reason_type: number | undefined;
-  statuses: number[] | undefined;
   date_begin: any;
   date_end: any;
 }
 
-const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, updateTable }) => {
+const EntranceFilter: React.FC<IEntranceFilter> = ({ tableParams, setTableParams, updateTable }) => {
   const { register, handleSubmit, setValue, control } = useForm<IFormInputs>();
 
   React.useEffect(() => {
     register("general_search");
-    register("reason_type");
-    register("statuses");
     register("date_begin");
     register("date_end");
 
@@ -34,10 +27,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
   }, []);
 
   const setValueDefalt = () => {
-    // TODO: Make save filter in localStorage
     setValue("general_search", "");
-    setValue("reason_type", undefined);
-    setValue("statuses", undefined);
     setValue("date_begin", undefined);
     setValue("date_end", undefined);
   };
@@ -46,8 +36,6 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
     tableParams.pagination = {};
 
     tableParams.search["general_search"] = data.general_search;
-    tableParams.search["reason_type"] = data.reason_type;
-    tableParams.search["statuses"] = data.statuses;
     tableParams.search["date_begin"] = data.date_begin?.format("DD.MM.YYYY");
     tableParams.search["date_end"] = data.date_end?.format("DD.MM.YYYY");
     setTableParams(tableParams);
@@ -59,24 +47,6 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
     handleSubmit(onSubmit)();
   };
 
-  const reason_types_options: any = [];
-  for (const [key, value] of Object.entries(ReasonTypeNames)) {
-    reason_types_options.push(
-      <Option key={key} value={key}>
-        {value}
-      </Option>
-    );
-  }
-
-  const status_options: any = [];
-  for (const [key, value] of Object.entries(StatusNames)) {
-    status_options.push(
-      <Option key={key} value={key}>
-        {value}
-      </Option>
-    );
-  }
-
   return (
     <Form className="ant-advanced-search-form" name="advanced_search">
       <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -86,7 +56,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
             control={control}
             render={({ field }) => (
               <Input
-                style={{ width: 220 }}
+                style={{ width: 300 }}
                 allowClear
                 placeholder="Поиск"
                 onPressEnter={() => {
@@ -94,28 +64,6 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
                 }}
                 {...field}
               />
-            )}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Controller
-            name="reason_type"
-            control={control}
-            render={({ field }) => (
-              <Select allowClear placeholder="Тип" style={{ width: 120 }} {...field}>
-                {reason_types_options}
-              </Select>
-            )}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Controller
-            name="statuses"
-            control={control}
-            render={({ field }) => (
-              <Select allowClear mode="multiple" placeholder="Статус" style={{ width: 200 }} {...field}>
-                {status_options}
-              </Select>
             )}
           />
         </Form.Item>
@@ -153,4 +101,4 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
   );
 };
 
-export default OrdersFilter;
+export default EntranceFilter;

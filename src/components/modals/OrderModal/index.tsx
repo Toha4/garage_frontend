@@ -8,7 +8,7 @@ import OrderService from "../../../services/OrderService";
 import CarService from "../../../services/CarService";
 import { CarType, OrderType } from "../../../services/types";
 import SelectOrderStatusForm from "../../forms/components/SelectOrderStatusForm";
-import DatePickerForm from "../../forms/components/DatePickerForm";
+import DateTimePickerForm from "../../forms/components/DateTimePickerForm";
 import SelectEmployeeForm from "../../forms/components/SelectEmployeeForm";
 import SelectReasonForm from "../../forms/components/SelectReasonForm";
 import SelectPostForm from "../../forms/components/SelectPostFrom";
@@ -16,21 +16,30 @@ import SelectCarForm from "../../forms/components/SelectCarFrom";
 import InputForm from "../../forms/components/InputForm";
 import TextAreaForm from "../../forms/components/TextAreaForm";
 import InputNumberForm from "../../forms/components/InputNumberForm";
-import showDeleteConfirmDialog from "../../common/DeleteDialog";
+import showConfirmDialog from "../../common/ConfirmDialog";
 import { Status } from "../../../helpers/constants";
 import { IFormOrderInputs } from "../../interface";
 import { formToOrderData, hasChangeOrderForm } from "../../../helpers/formUtils";
 import TableOrderWorksForm from "./TableOrderWorksForm";
+import TableOrderMaterialsForm from "./TableOrderMaterialsForm";
 
 interface IOrderModalForm {
   orderPk: number | null;
   open: boolean;
   actionForm: ActionTypes;
+  readOnlyMode?: boolean;
   handleOk: () => void;
   handleCancel: (update: boolean) => void;
 }
 
-const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, handleOk, handleCancel }) => {
+const OrderModalForm: React.FC<IOrderModalForm> = ({
+  orderPk,
+  open,
+  actionForm,
+  handleOk,
+  handleCancel,
+  readOnlyMode = false,
+}) => {
   const user = React.useContext(UserContext);
 
   const DataOrderService = new OrderService();
@@ -54,6 +63,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
       odometer: null,
       note: "",
       works: [],
+      materials: [],
     },
   });
   const [pk, setPk] = React.useState<number | null>(orderPk);
@@ -75,6 +85,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
     register("odometer");
     register("note");
     register("works");
+    register("materials");
 
     if (action === ActionTypes.EDIT && pk) {
       const onDataLoaded = (data: OrderType) => {
@@ -103,6 +114,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
     setValue("odometer", data.odometer);
     setValue("note", data.note);
     setValue("works", data.order_works);
+    setValue("materials", data.turnovers_from_order);
   };
 
   const getTitle = () => {
@@ -166,7 +178,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
 
   const onCancel = () => {
     if (orderData && hasChangeOrderForm(orderData, watch())) {
-      showDeleteConfirmDialog({
+      showConfirmDialog({
         title: "В заказ-наряде были внесены изменения, сохранить?",
         onOk: () => {
           onOk();
@@ -181,7 +193,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
   };
 
   const onRemoveOrder = () => {
-    showDeleteConfirmDialog({
+    showConfirmDialog({
       title: `Вы уверены, что хотите удалить заказ-наряд №${orderData?.number}?`,
       onOk: () => {
         if (orderData?.pk) {
@@ -212,12 +224,11 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
         .catch((error) => {
           alert(error);
         });
-    }
+    };
 
     if (pk) {
       onOk(true, toExcel);
-    }
-    else {
+    } else {
       toExcel();
     }
   };
@@ -245,9 +256,10 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
 
   const edit_access = user ? user.edit_access : false;
   const is_superuser = user ? user.is_superuser : false;
-  const editMode: boolean = (edit_access && orderData?.status !== Status.COMPLETED) || is_superuser;
+  const editMode: boolean = (edit_access && orderData?.status !== Status.COMPLETED && !readOnlyMode) || is_superuser;
 
   const dateRequestData = watch("date_begin");
+  const defaultCompatbility = watch("car_name");
 
   return (
     <Modal
@@ -279,6 +291,15 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
               </Button>,
             ]
           : [
+              <span
+                style={{
+                  display: readOnlyMode && orderData?.status !== Status.COMPLETED ? "inherit" : "none",
+                  float: "left",
+                  color: "red",
+                }}
+              >
+                Редактирование возможно только открыв из модуля "Заказ-наряды"
+              </span>,
               <Button key="close" onClick={onCancel}>
                 Закрыть
               </Button>,
@@ -294,12 +315,12 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
           </Col>
           <Col span={6}>
             <Form.Item label="Дата начала" required validateStatus={errors.date_begin ? "error" : "success"}>
-              <DatePickerForm name="date_begin" control={control} required />
+              <DateTimePickerForm name="date_begin" control={control} required width={"199px"} />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label="Дата завершения">
-              <DatePickerForm name="date_end" control={control} onChange={onChangeDateEnd} />
+              <DateTimePickerForm name="date_end" control={control} width={"199px"} onChange={onChangeDateEnd} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -365,8 +386,15 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({ orderPk, open, actionForm, 
             <TableOrderWorksForm name="works" control={control} editMode={editMode} dateRequest={dateRequestData} />
           </Form.Item>
         </Tabs.TabPane>
-        <Tabs.TabPane disabled tab="Материалы" key="2">
-          In development!
+        <Tabs.TabPane tab="Материалы" key="2">
+          <Form.Item>
+            <TableOrderMaterialsForm
+              name="materials"
+              control={control}
+              editMode={editMode}
+              defaultCompatbility={defaultCompatbility}
+            />
+          </Form.Item>
         </Tabs.TabPane>
         <Tabs.TabPane disabled tab="Диагностика" key="3">
           In development!

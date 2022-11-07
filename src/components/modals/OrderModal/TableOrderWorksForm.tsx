@@ -2,14 +2,14 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import TableOrderWorks from "./TableOrderWorks";
 
-interface ISelectStatus {
+interface ITableOrderWorksForm {
   name: string;
   control: any;
   editMode?: boolean;
   dateRequest?: moment.Moment;
 }
 
-const TableOrderWorksForm: React.FC<ISelectStatus> = ({ name, control, editMode = true, dateRequest }) => {
+const TableOrderWorksForm: React.FC<ITableOrderWorksForm> = ({ name, control, editMode = true, dateRequest }) => {
   return (
     <Controller
       name={name}

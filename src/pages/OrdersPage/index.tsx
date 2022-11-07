@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, Table } from "antd";
-import UserContext from "../helpers/UserContext";
+import UserContext from "../../helpers/UserContext";
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { FilterValue, SorterResult } from "antd/lib/table/interface";
-import { OrderShortType, ResultResursePagation } from "../services/types";
-import OrderService from "../services/OrderService";
-import { ITableParams } from "../components/interface";
-import OrdersFilter from "../components/OrdersFilter";
-import { ActionTypes } from "../helpers/types";
-import OrderModalForm from "../components/modals/OrderModal";
+import { OrderShortType, ResultResursePagation } from "../../services/types";
+import OrderService from "../../services/OrderService";
+import { ITableParams } from "../../components/interface";
+import OrdersFilter from "./OrdersFilter";
+import { ActionTypes } from "../../helpers/types";
+import OrderModalForm from "../../components/modals/OrderModal";
 
 const TableParamsDefault: ITableParams = {
   pagination: {},

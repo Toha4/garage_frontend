@@ -5,3 +5,7 @@ export function truncateStr(str: string, length: number) {
     return str;
   }
 }
+
+export function quantityFormatter(quantity: number, is_precision_point: boolean, unit: string) {
+  return `${quantity.toFixed(is_precision_point ? 2 : 0)} ${unit}`;
+}

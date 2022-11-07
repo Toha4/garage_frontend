@@ -59,7 +59,10 @@ const WorkCategoryModalForm: React.FC<IWorkCategoryModalForm> = ({ pk, open, onO
     };
 
     const onFailed = (error: any) => {
-      if (error.response.data?.name[0] === "Категория работ с таким Наименование уже существует.") {
+      if (
+        error.response.data?.name &&
+        error.response.data?.name[0] === "Категория работ с таким Наименование уже существует."
+      ) {
         setError("name", { type: "custom", message: "Категория с таким наименованием уже существует!" });
       } else {
         alert(error.responseText);
@@ -94,7 +97,7 @@ const WorkCategoryModalForm: React.FC<IWorkCategoryModalForm> = ({ pk, open, onO
             validateStatus={errors.name ? "error" : "success"}
             help={errors.name ? errors.name.message : null}
           >
-            <InputForm name="name" control={control} />
+            <InputForm name="name" maxLength={32} control={control} />
           </Form.Item>
         </Form>
       </Modal>

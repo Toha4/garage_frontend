@@ -21,7 +21,7 @@ export interface IMaterialTable extends MaterialRemainsWarehouseType {
 
 interface IMaterialCategoryTable {
   key: React.Key;
-  id: number;
+  pk: number;
   name: string;
   material_count?: number;
   price?: number;
@@ -59,7 +59,7 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
       const data = result.map((category) => {
         return {
           key: `C-${category.pk}`,
-          id: category.pk,
+          pk: category.pk,
           name: category.name,
           material_count: category.material_count,
           children: [],
@@ -89,8 +89,8 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
     const onDataLoaded = (result: MaterialRemainsWarehouseType[]) => {
       const materials = result.map((material) => {
         return {
-          key: `M-${material.id}-${material.warehouse}`,
-          id: material.id,
+          key: `M-${material.pk}-${material.warehouse}`,
+          pk: material.pk,
           name: material.name,
           unit_name: material.unit_name,
           unit_is_precision_point: material.unit_is_precision_point,
@@ -107,7 +107,7 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
       setDataSearch([
         {
           key: "C-0",
-          id: 0,
+          pk: 0,
           name: "Поиск",
           children: materials,
         },
@@ -188,7 +188,7 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
       if (selected) {
         selectedMaterials.push(record as any as IMaterialTable);
       } else {
-        const index = selectedMaterials.findIndex((item) => record.id === item.id);
+        const index = selectedMaterials.findIndex((item) => record.pk === item.pk);
         if (index >= 0) {
           selectedMaterials.splice(index, 1);
         }
@@ -202,7 +202,7 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
     if (onOk) {
       const materials = selectedMaterials!.map((materialTable) => {
         return {
-          id: materialTable.id,
+          pk: materialTable.pk,
           category: materialTable.category,
           name: materialTable.name,
           unit_name: materialTable.unit_name,
@@ -223,17 +223,17 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
   const reloadAllMaterialCateroy = () => {
     for (let category of dataSource) {
       if (category.is_expend) {
-        loadingMaterialsCategory(category.id);
+        loadingMaterialsCategory(category.pk);
       }
     }
   };
 
-  const loadingMaterialsCategory = (id_category: number) => {
+  const loadingMaterialsCategory = (category_pk: number) => {
     const onDataLoaded = (result: MaterialRemainsWarehouseType[]) => {
       const data = result.map((material) => {
         return {
-          key: `M-${material.id}-${material.warehouse}`,
-          id: material.id,
+          key: `M-${material.pk}-${material.warehouse}`,
+          pk: material.pk,
           name: material.name,
           unit_name: material.unit_name,
           unit_is_precision_point: material.unit_is_precision_point,
@@ -247,7 +247,7 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
         };
       }) as IMaterialTable[];
 
-      const category = dataSource.find((category) => category.key === `C-${id_category}`);
+      const category = dataSource.find((category) => category.key === `C-${category_pk}`);
       if (category) {
         category.children = data;
         category.is_expend = true;
@@ -260,14 +260,14 @@ const RemainsMaterialsModal: React.FC<IRemainsMaterialsModal> = ({
       alert(error);
     };
 
-    DataMaterialService.getMaterialRemainsCategory({ category: id_category, ...filter })
+    DataMaterialService.getMaterialRemainsCategory({ category: category_pk, ...filter })
       .then(onDataLoaded)
       .catch(onError);
   };
 
   const handleExpand = (expanded: boolean, record: IMaterialCategoryTable) => {
     if (expanded && "children" in record) {
-      loadingMaterialsCategory(record.id);
+      loadingMaterialsCategory(record.pk);
     }
   };
 

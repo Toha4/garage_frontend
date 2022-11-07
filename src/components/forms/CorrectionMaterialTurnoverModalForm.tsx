@@ -14,7 +14,7 @@ import moment from "moment";
 import showConfirmDialog from "../common/ConfirmDialog";
 
 interface ICorrectionMaterialTurnoverModalForm {
-  materialId: number;
+  materialPk: number;
   materialName: string;
   unit_name: string;
   unit_is_precision_point: boolean;
@@ -26,7 +26,7 @@ interface ICorrectionMaterialTurnoverModalForm {
 }
 
 const CorrectionMaterialTurnoverModalForm: React.FC<ICorrectionMaterialTurnoverModalForm> = ({
-  materialId,
+  materialPk,
   materialName,
   unit_name,
   unit_is_precision_point,
@@ -77,7 +77,7 @@ const CorrectionMaterialTurnoverModalForm: React.FC<ICorrectionMaterialTurnoverM
     register("note", { required: "Напишите причину корректировки!" });
   }, []);
 
-  const warehousesAvailabilityId = warehousesAvailability.map((item) => item.warehouse);
+  const warehousesAvailabilityPk = warehousesAvailability.map((item) => item.warehouse);
 
   const onSubmit = (data: IFormCorrectionTurnoverInputs) => {
     const turnoverData: TurnoverType = {
@@ -85,7 +85,7 @@ const CorrectionMaterialTurnoverModalForm: React.FC<ICorrectionMaterialTurnoverM
       type: Number(data.type),
       is_correction: true,
       date: moment().format("DD.MM.YYYY"),
-      material: materialId,
+      material: materialPk,
       warehouse: data.warehouse,
       quantity: data.quantity,
       price: Number(data.price),
@@ -117,7 +117,7 @@ const CorrectionMaterialTurnoverModalForm: React.FC<ICorrectionMaterialTurnoverM
   };
 
   const handleChangeType = (value: any, option: any) => {
-    if (value == 2 && !warehousesAvailabilityId.includes(watch("warehouse"))) {
+    if (value == 2 && !warehousesAvailabilityPk.includes(watch("warehouse"))) {
       resetField("warehouse");
     }
   };
@@ -127,7 +127,7 @@ const CorrectionMaterialTurnoverModalForm: React.FC<ICorrectionMaterialTurnoverM
     setValue("sum", sum.toFixed(2));
   };
 
-  const activeOptionWarehouse = watch("type") == 2 ? warehousesAvailabilityId : undefined;
+  const activeOptionWarehouse = watch("type") == 2 ? warehousesAvailabilityPk : undefined;
 
   let maxQuantity: number | undefined = undefined;
   if (watch("type") == 2 && watch("warehouse") > 0) {

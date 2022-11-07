@@ -17,13 +17,13 @@ const FilterTurnoverOptions = [
 ];
 
 interface IMaterialHistoryModal {
-  materialId: number;
+  materialPk: number;
   open: boolean;
   onOk: () => void;
   onCancel: () => void;
 }
 
-const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialId, open, onOk, onCancel }) => {
+const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialPk, open, onOk, onCancel }) => {
   const user = React.useContext(UserContext);
 
   const DataMaterialService = new MaterialService();
@@ -51,7 +51,7 @@ const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialId, ope
     };
 
     if (update) {
-      DataMaterialService.getMaterial(materialId, { availability_mode: true })
+      DataMaterialService.getMaterial(materialPk, { availability_mode: true })
         .then(onDataLoaded)
         .catch(onError)
         .finally(onFinally);
@@ -143,7 +143,7 @@ const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialId, ope
     >
       {modalFormCorrectionOpen && data && (
         <CorrectionMaterialTurnoverModalForm
-          materialId={data.id}
+          materialPk={data.pk}
           materialName={data.name}
           unit_name={data.unit_name}
           unit_is_precision_point={data.unit_is_precision_point}
@@ -156,7 +156,7 @@ const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialId, ope
       )}
       {modalFormMovingOpen && data && filterTurnoverWarehouse && (
         <MovingMaterialModalForm
-          materialId={data.id}
+          materialPk={data.pk}
           materialName={data.name}
           unit_name={data.unit_name}
           unit_is_precision_point={data.unit_is_precision_point}
@@ -221,7 +221,7 @@ const MaterialHistoryModal: React.FC<IMaterialHistoryModal> = ({ materialId, ope
       </Row>
 
       <TableTurnover
-        materialId={materialId}
+        materialPk={materialPk}
         filterType={filterTurnoverType > 0 ? filterTurnoverType : undefined}
         filterWarehouse={filterTurnoverWarehouse}
         update={updateTable}

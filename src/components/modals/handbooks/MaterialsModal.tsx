@@ -387,7 +387,7 @@ const MaterialsModal: React.FC<IMaterialsModal> = ({
     showFormCategoryModal();
   };
 
-  const loadingMaterialsCategory = (id_category: number) => {
+  const loadingMaterialsCategory = (category_pk: number) => {
     const onDataLoaded = (result: MaterialType[]) => {
       const data = result.map((material) => {
         return {
@@ -402,7 +402,7 @@ const MaterialsModal: React.FC<IMaterialsModal> = ({
         };
       }) as IMaterialTable[];
 
-      dataSource.find((category) => category.key === `C-${id_category}`)!.children = data;
+      dataSource.find((category) => category.key === `C-${category_pk}`)!.children = data;
       setDataSource([...dataSource]);
     };
 
@@ -410,7 +410,7 @@ const MaterialsModal: React.FC<IMaterialsModal> = ({
       alert(error);
     };
 
-    DataMaterialService.getMaterials({ category: id_category }).then(onDataLoaded).catch(onError);
+    DataMaterialService.getMaterials({ category: category_pk }).then(onDataLoaded).catch(onError);
   };
 
   const handleExpand = (expanded: boolean, record: IMaterialCategoryTable) => {

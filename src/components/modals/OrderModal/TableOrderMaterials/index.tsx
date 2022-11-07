@@ -28,11 +28,11 @@ const TableOrderMaterials: React.FC<ITableOrderMaterials> = ({ value, onChange, 
 
       for (const material of materials) {
         // Если такой работы еще нету в заказ-наряде то добавляем
-        if (value.findIndex((item) => material.id === item.material && material.warehouse === item.warehouse) === -1) {
+        if (value.findIndex((item) => material.pk === item.material && material.warehouse === item.warehouse) === -1) {
           addedOrderMaterials.push({
             pk: null,
             date: moment().format("DD.MM.YYYY"),
-            material: material.id,
+            material: material.pk,
             material_name: material.name,
             material_unit_name: material.unit_name,
             material_unit_is_precision_point: material.unit_is_precision_point,

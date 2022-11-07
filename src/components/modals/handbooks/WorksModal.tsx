@@ -352,7 +352,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
     showFormCategoryModal();
   };
 
-  const loadingWorksCategory = (id_category: number) => {
+  const loadingWorksCategory = (category_pk: number) => {
     const onDataLoaded = (result: WorkType[]) => {
       const data = result.map((work) => {
         return {
@@ -364,7 +364,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
         };
       }) as IWorkTable[];
 
-      dataSource.find((category) => category.key === `C-${id_category}`)!.children = data;
+      dataSource.find((category) => category.key === `C-${category_pk}`)!.children = data;
       setDataSource([...dataSource]);
     };
 
@@ -372,7 +372,7 @@ const WorksModal: React.FC<IWorksModal> = ({ open, onOk, onCancel, selectMode = 
       alert(error);
     };
 
-    DataWorkService.geWorks({ category: id_category }).then(onDataLoaded).catch(onError);
+    DataWorkService.geWorks({ category: category_pk }).then(onDataLoaded).catch(onError);
   };
 
   const handleExpand = (expanded: boolean, record: IWorkCategoryTable) => {

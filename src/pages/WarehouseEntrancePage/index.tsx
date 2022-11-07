@@ -142,7 +142,7 @@ const WarehouseEntrancePage: React.FC = () => {
   ];
 
   const expandedRowRender = (record: IEntranceTable) => {
-    return <EntranceMaterialTable entrance_id={record.pk} update_id={updateEntrance} />;
+    return <EntranceMaterialTable entrance_pk={record.pk} update_pk={updateEntrance} />;
   };
 
   return (

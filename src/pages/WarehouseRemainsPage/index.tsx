@@ -26,7 +26,7 @@ const WarehouseRemainsPage: React.FC = () => {
   const [tableParams, setTableParams] = React.useState<ITableParams>(TableParamsDefault);
   const [update, setUpdate] = React.useState<boolean>(true);
 
-  const [actionId, setActionId] = React.useState<number | undefined>(undefined);
+  const [actionPk, setActionPk] = React.useState<number | undefined>(undefined);
   const [openHistoryModal, setOpenHistoryModal] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -86,8 +86,8 @@ const WarehouseRemainsPage: React.FC = () => {
     );
   };
 
-  const handleHistoryTurnover = (material_id: number) => {
-    setActionId(material_id);
+  const handleHistoryTurnover = (material_pk: number) => {
+    setActionPk(material_pk);
     setOpenHistoryModal(true);
   };
 
@@ -114,7 +114,7 @@ const WarehouseRemainsPage: React.FC = () => {
 
   const handleOk = () => {
     showHistoryDialog();
-    setActionId(undefined);
+    setActionPk(undefined);
 
     tableParams.pagination = {};
     setTableParams(tableParams);
@@ -124,7 +124,7 @@ const WarehouseRemainsPage: React.FC = () => {
 
   const handleCancel = () => {
     showHistoryDialog();
-    setActionId(undefined);
+    setActionPk(undefined);
   };
 
   const columns: ColumnsType<MaterialRemainsType> = [
@@ -209,7 +209,7 @@ const WarehouseRemainsPage: React.FC = () => {
       render: (_, record) => (
         <div>
           <Tooltip title="История" mouseEnterDelay={0.6}>
-            <Button className="action-button" type="link" onClick={() => handleHistoryTurnover(record.id)}>
+            <Button className="action-button" type="link" onClick={() => handleHistoryTurnover(record.pk)}>
               <HistoryOutlined />
             </Button>
           </Tooltip>
@@ -220,15 +220,15 @@ const WarehouseRemainsPage: React.FC = () => {
 
   return (
     <>
-      {openHistoryModal && actionId && (
-        <MaterialHistoryModal materialId={actionId} open={openHistoryModal} onOk={handleOk} onCancel={handleCancel} />
+      {openHistoryModal && actionPk && (
+        <MaterialHistoryModal materialPk={actionPk} open={openHistoryModal} onOk={handleOk} onCancel={handleCancel} />
       )}
 
       <RemainsFilter tableParams={tableParams} setTableParams={setTableParams} updateTable={setUpdate} />
       <Table
         bordered
         size="small"
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.pk}
         columns={columns}
         dataSource={dataSource}
         onChange={handleTableChange}
@@ -242,7 +242,7 @@ const WarehouseRemainsPage: React.FC = () => {
         onRow={(record, rowIndex) => {
           return {
             onDoubleClick: (event) => {
-              handleHistoryTurnover(record.id);
+              handleHistoryTurnover(record.pk);
             },
           };
         }}

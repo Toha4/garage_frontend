@@ -7,13 +7,13 @@ import WarehouseService from "../../../services/WarehouseService";
 import WarehouseModalForm from "../../forms/WarehouseModalForm";
 import showConfirmDialog from "../../common/ConfirmDialog";
 
-interface IWarehouseModal {
+interface IWarehousesModal {
   open: boolean;
   onOk?: () => void;
   onCancel: () => void;
 }
 
-const WarehouseModal: React.FC<IWarehouseModal> = ({ open, onOk, onCancel }) => {
+const WarehousesModal: React.FC<IWarehousesModal> = ({ open, onOk, onCancel }) => {
   const DataWarehouseService = new WarehouseService();
 
   const [dataSource, setDataSource] = React.useState<WarehouseType[]>([]);
@@ -145,4 +145,4 @@ const WarehouseModal: React.FC<IWarehouseModal> = ({ open, onOk, onCancel }) => 
   );
 };
 
-export default WarehouseModal;
+export default WarehousesModal;

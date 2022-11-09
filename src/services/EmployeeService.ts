@@ -1,5 +1,5 @@
 import BaseService from "./BaseService";
-import { EmployeeType } from "./types";
+import { EmployeeWriteType } from "./types";
 
 class EmployeeService extends BaseService {
   private _apiURL: string;
@@ -18,8 +18,8 @@ class EmployeeService extends BaseService {
     return await this.getResource(`${this._apiURL}${pk}`);
   };
 
-  updateEmployee = async (pk: number, employee: EmployeeType) => {
-    return await this.updateResourceJSON(`${this._apiURL}${pk}`, employee);
+  updateEmployee = async (pk: number, employee: EmployeeWriteType) => {
+    return await this.partialUpdate(`${this._apiURL}${pk}`, employee);
   };
 }
 

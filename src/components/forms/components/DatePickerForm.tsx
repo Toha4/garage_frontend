@@ -10,6 +10,7 @@ interface IDateTimePickerForm {
   required?: boolean;
   width?: string | number | undefined;
   disable?: boolean;
+  placeholder?: string;
 }
 
 const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
@@ -19,6 +20,7 @@ const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
   required = false,
   width = undefined,
   disable,
+  placeholder="Выберите дату"
 }) => {
   return (
     <Controller
@@ -27,7 +29,7 @@ const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
       render={({ field }) => (
         <DatePicker
           allowClear={!required}
-          placeholder="Выберите дату"
+          placeholder={placeholder}
           format="DD.MM.YYYY"
           style={{ width: width }}
           disabled={disable}

@@ -46,7 +46,7 @@ const MaterialModalForm: React.FC<IMaterialModalForm> = ({ pk, open, onOk, onCan
     register("article_number");
     register("compatbility");
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: MaterialType) => {
         setValue("unit", data.unit);
         setValue("category", data.category);

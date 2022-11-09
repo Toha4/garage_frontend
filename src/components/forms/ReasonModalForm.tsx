@@ -38,7 +38,7 @@ const ReasonModalForm: React.FC<IReasonModalForm> = ({ pk, open, onOk, onCancel 
     register("name", { required: "Введите наименование причины!" });
     register("type", { required: "Выберите тип причины!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: ReasonType) => {
         setValue("name", data.name);
         setValue("type", data.type);

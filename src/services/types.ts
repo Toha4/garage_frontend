@@ -88,6 +88,8 @@ export type EmployeeType = {
 
 export type EmployeeShortType = Pick<EmployeeType, "pk" | "short_fio" | "type">;
 
+export type EmployeeWriteType = Pick<EmployeeType, "type">;
+
 export type CarType = {
   pk: number;
   kod_mar_in_putewka: number;
@@ -97,9 +99,12 @@ export type CarType = {
   kod_driver: number;
   driver_pk: number;
   date_decommissioned: string;
+  has_tag_material?: boolean;
 };
 
 export type CarShortType = Pick<CarType, "pk" | "state_number" | "name">;
+
+export type CarWriteType = Pick<CarType, "name">;
 
 export type CarTagType = Pick<CarType, "name">;
 

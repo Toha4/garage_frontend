@@ -100,7 +100,7 @@ const EntranceModalForm: React.FC<IEntranceModalForm> = ({
   const onSubmit = (data: IFormEntranceInputs) => {
     if (isNewTurnovesMaterials(data)) {
       showConfirmDialog({
-        title: `Добавленные материалы нельзя в дальнейшем удалить или редактировать`,
+        title: "Добавленные материалы нельзя в дальнейшем удалить или редактировать",
         okText: "Продолжить",
         cancelText: "Назад",
         okType: "primary",

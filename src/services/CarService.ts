@@ -1,5 +1,5 @@
 import BaseService from "./BaseService";
-import { CarType } from "./types";
+import { CarWriteType } from "./types";
 
 class CarService extends BaseService {
   private _apiURL: string;
@@ -18,8 +18,8 @@ class CarService extends BaseService {
     return await this.getResource(`${this._apiURL}${pk}`);
   };
 
-  updateCar = async (pk: number, car: CarType) => {
-    return await this.updateResourceJSON(`${this._apiURL}${pk}`, car);
+  updateCar = async (pk: number, car: CarWriteType, params = {}) => {
+    return await this.partialUpdate(`${this._apiURL}${pk}`, car, params);
   };
 
   getCarsTags = async (params = {}) => {

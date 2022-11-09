@@ -35,7 +35,7 @@ const MaterialCategoryModalForm: React.FC<IMaterialCategoryModalForm> = ({ pk, o
   React.useEffect(() => {
     register("name", { required: "Введите наименование категории!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: MaterialCategoryType) => {
         setValue("name", data.name);
       };

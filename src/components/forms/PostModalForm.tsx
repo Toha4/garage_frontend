@@ -36,7 +36,7 @@ const PostModalForm: React.FC<IPostModalForm> = ({ pk, open, onOk, onCancel }) =
   React.useEffect(() => {
     register("name", { required: "Введите наименование поста!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: PostType) => {
         setValue("name", data.name);
       };

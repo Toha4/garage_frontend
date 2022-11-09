@@ -38,7 +38,7 @@ const WorkModalForm: React.FC<IWorkModalForm> = ({ pk, open, onOk, onCancel }) =
     register("category", { required: "Выберите категорию!" });
     register("name", { required: "Введите наименование работы!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: WorkType) => {
         setValue("category", data.category);
         setValue("name", data.name);

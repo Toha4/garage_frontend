@@ -79,10 +79,10 @@ export default class BaseService {
     return response.data;
   };
 
-  partialUpdate = async (url: string, data: any) => {
+  partialUpdate = async (url: string, data: any, params = {}) => {
     const response = await api({
       method: "PATCH",
-      url: url,
+      url: `${url}${getSearchParams(params)}`,
       data: JSON.stringify(data, toJson),
       headers: {
         "Content-Type": "application/json",

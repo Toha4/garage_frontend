@@ -35,7 +35,7 @@ const WorkCategoryModalForm: React.FC<IWorkCategoryModalForm> = ({ pk, open, onO
   React.useEffect(() => {
     register("name", { required: "Введите наименование категории!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: WorkCategoryType) => {
         setValue("name", data.name);
       };

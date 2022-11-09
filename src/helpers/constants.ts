@@ -31,3 +31,15 @@ export const TurnoverTypesNames = {
   [TurnoverTypes.COMING]: "Приход",
   [TurnoverTypes.EXPENSE]: "Расход",
 };
+
+export const EmployeeTypes = {
+  DRIVER: 1,
+  MECHANIC: 2,
+  MANAGEMENT: 3,
+};
+
+export const EmployeeTypesNames = {
+  [EmployeeTypes.DRIVER]: "Водитель",
+  [EmployeeTypes.MECHANIC]: "Слесарь",
+  [EmployeeTypes.MANAGEMENT]: "Управление",
+};

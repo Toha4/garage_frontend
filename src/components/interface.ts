@@ -25,6 +25,21 @@ export interface IFormOrderInputs {
   materials: TurnoverNestedOrderType[] | null;
 }
 
+export interface IFormCarInputs {
+  name: string;
+  state_number: string;
+  date_decommissioned: any;
+}
+
+export interface IFormEmployeeInputs {
+  first_name: string;
+  last_name: string;
+  patronymic: string;
+  position: string;
+  type: number;
+  date_dismissal: any;
+}
+
 export interface IFormWorkInputs {
   category: number;
   name: string;

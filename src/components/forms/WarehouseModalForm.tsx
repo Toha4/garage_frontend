@@ -36,7 +36,7 @@ const WarehouseModalForm: React.FC<IWarehouseModalForm> = ({ pk, open, onOk, onC
   React.useEffect(() => {
     register("name", { required: "Введите наименование склада!" });
 
-    if (action === ActionTypes.EDIT && pk) {
+    if (pk) {
       const onDataLoaded = (data: WarehouseType) => {
         setValue("name", data.name);
       };

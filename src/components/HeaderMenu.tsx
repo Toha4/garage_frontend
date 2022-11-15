@@ -39,23 +39,22 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
       key: "3",
       icon: <FileTextOutlined />,
       label: "Отчеты",
-      disabled: true,
       children: [
         {
-          key: "/report-vehicles",
-          label: <Link to="/report-vehicles"> По ТС </Link>,
+          key: "/report-cars",
+          label: <Link to="/report-cars"> По ремонту ТС </Link>,
+        },
+        // {
+        //   key: "/report-car-detail",
+        //   label: <Link to="/report-car-detail"> По ТС подробно </Link>,
+        // },
+        {
+          key: "/report-mechanics",
+          label: <Link to="/report-mechanics"> По работникам </Link>,
         },
         {
-          key: "/report-2",
-          label: <Link to="/report-2"> По ТС подробно </Link>,
-        },
-        {
-          key: "/report-3",
-          label: <Link to="/report-3"> По работникам </Link>,
-        },
-        {
-          key: "/report-4",
-          label: <Link to="/report-4"> По материалам </Link>,
+          key: "/report-materials",
+          label: <Link to="/report-materials"> По материалам </Link>,
         },
       ],
     },

@@ -50,6 +50,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     handleSubmit,
     setValue,
     watch,
+    setError,
     formState: { errors },
     control,
   } = useForm<IFormOrderInputs>({
@@ -71,6 +72,8 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
   const [confirmLoading, setConfirmLoading] = React.useState<boolean>(false);
   const [orderData, setOrderData] = React.useState<OrderType>();
   const [saveFlag, setSaveFlag] = React.useState<boolean>(false);
+
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     register("status");
@@ -97,7 +100,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
         alert(error);
       };
 
-      DataOrderService.getOrder(pk).then(onDataLoaded).catch(onError);
+      const onFinaly = () => {
+        setLoading(false);
+      };
+
+      DataOrderService.getOrder(pk).then(onDataLoaded).catch(onError).finally(onFinaly);
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -137,7 +146,31 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     );
   };
 
+  const complotedValidation = (data: IFormOrderInputs) => {
+    let is_error = false;
+
+    if (data.status != Status.COMPLETED) {
+      return is_error;
+    }
+
+    if (data.date_end === null || data.date_end === undefined) {
+      setError("date_end", { type: "custom", message: "Заполните дату завершения!" });
+      is_error = true;
+    }
+
+    if (data.responsible === null || data.responsible === undefined) {
+      setError("responsible", { type: "custom", message: "Выберите ответственного!" });
+      is_error = true;
+    }
+
+    return is_error;
+  };
+
   const onSubmit = (data: IFormOrderInputs, withoutClose = false, callback?: any) => {
+    if (complotedValidation(data)) {
+      return;
+    }
+
     setConfirmLoading(true);
 
     const orderData = formToOrderData(data);
@@ -243,9 +276,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     DataCarService.getCar(value)
       .then((data: CarType) => {
         setValue("car_name", data.name);
-        if (watch("driver") === null) {
-          setValue("driver", data.driver_pk);
-        }
+        setValue("driver", data.driver_pk);
       })
       .catch((error) => alert(error));
   };
@@ -273,7 +304,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
   return (
     <Modal
       title={getTitle()}
-      open={open}
+      open={open && !loading}
       onCancel={onCancel}
       maskClosable={false}
       width={900}
@@ -329,12 +360,12 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item label="Дата завершения">
+            <Form.Item label="Дата завершения" validateStatus={errors.date_end ? "error" : "success"}>
               <DateTimePickerForm name="date_end" control={control} width={"199px"} onChange={onChangeDateEnd} />
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item label="Ответственный">
+            <Form.Item label="Ответственный" validateStatus={errors.responsible ? "error" : "success"}>
               <SelectEmployeeForm name="responsible" control={control} type={3} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>

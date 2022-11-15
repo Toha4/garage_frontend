@@ -25,7 +25,10 @@ const User: React.FC<IUser> = ({ user }) => {
             icon={<UserOutlined />}
             size="large"
           />
-          <Tooltip title={user?.edit_access ? "Редактирование разрешено" : "Редактирование запрещено"}>
+          <Tooltip
+            mouseEnterDelay={0.8}
+            title={user?.edit_access ? "Редактирование разрешено" : "Редактирование запрещено"}
+          >
             <div className="user-username">{user && user.full_name}</div>
           </Tooltip>
         </div>

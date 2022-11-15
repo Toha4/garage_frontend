@@ -1,6 +1,7 @@
 import React from "react";
 import { Select } from "antd";
-import { EmployeeShortType, OrderWorkMechanics } from "../../../services/types";
+import { EmployeeShortType } from "../../../services/types";
+import { OrderWorkMechanics } from "../../../services/types";
 import EmployeeService from "../../../services/EmployeeService";
 
 const { Option } = Select;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table } from "antd";
+import { Button, Table, Tag } from "antd";
 import UserContext from "../../helpers/UserContext";
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table";
 import { FilterValue, SorterResult } from "antd/lib/table/interface";
@@ -9,6 +9,8 @@ import { ITableParams } from "../../components/interface";
 import OrdersFilter from "./OrdersFilter";
 import { ActionTypes } from "../../helpers/types";
 import OrderModalForm from "../../components/modals/OrderModal";
+import { Status } from "../../helpers/constants";
+import EmployeeNotesModal from "../../components/modals/EmployeeNotesModal";
 
 const TableParamsDefault: ITableParams = {
   pagination: {},
@@ -31,6 +33,7 @@ const OrdersPage: React.FC = () => {
   const [update, setUpdate] = React.useState<boolean>(true);
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [modalAction, setModalAction] = React.useState<ActionTypes>(ActionTypes.ADD);
+  const [employeeNotesModalOpen, setEmployeeNotesModalOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const onDataLoaded = ({ page_size, count, numbers, results }: ResultResursePagation<OrderShortType>) => {
@@ -90,22 +93,22 @@ const OrdersPage: React.FC = () => {
     setUpdate(true);
   };
 
-  const showDialog = () => {
+  const showModal = () => {
     setModalOpen((prevModalOpen) => !prevModalOpen);
   };
 
   const handleAdd = () => {
     setModalAction(ActionTypes.ADD);
-    showDialog();
+    showModal();
   };
 
   const handleEdit = () => {
     setModalAction(ActionTypes.EDIT);
-    showDialog();
+    showModal();
   };
 
   const handleOk = () => {
-    showDialog();
+    showModal();
 
     tableParams.pagination = {};
     setTableParams(tableParams);
@@ -115,7 +118,29 @@ const OrdersPage: React.FC = () => {
 
   const handleCancel = (update: boolean = false) => {
     if (update) setUpdate(true);
-    showDialog();
+    showModal();
+  };
+
+  const showEmployeeNotesModal = () => {
+    setEmployeeNotesModalOpen((prevModalOpen) => !prevModalOpen);
+  };
+
+  const handleOpenEmployeeNotes = () => {
+    showEmployeeNotesModal();
+  };
+
+  const getStatusTagColor = (order_status: number) => {
+    switch (order_status) {
+      case Status.COMPLETED: {
+        return "success";
+      }
+      case Status.WORK: {
+        return "warning";
+      }
+      default: {
+        return "default";
+      }
+    }
   };
 
   const columns: ColumnsType<OrderShortType> = [
@@ -142,12 +167,13 @@ const OrdersPage: React.FC = () => {
       width: 110,
       sorter: true,
       showSorterTooltip: false,
+      render: (text, record) => <Tag color={getStatusTagColor(record.status)}>{text}</Tag>,
     },
     {
       title: "Марка и модель",
       key: "car_name",
       dataIndex: "car_name",
-      width: 170,
+      width: 190,
     },
     {
       title: "Гос. №",
@@ -159,7 +185,7 @@ const OrdersPage: React.FC = () => {
       title: "Пост",
       key: "post",
       dataIndex: "post_name",
-      width: 110,
+      width: 120,
     },
     {
       title: "Причина",
@@ -190,9 +216,15 @@ const OrdersPage: React.FC = () => {
           handleCancel={handleCancel}
         />
       )}
+      {employeeNotesModalOpen && (
+        <EmployeeNotesModal open={employeeNotesModalOpen} onCancel={() => showEmployeeNotesModal()} />
+      )}
 
       <Button disabled={!edit_mode} type="primary" style={{ margin: "10px" }} onClick={handleAdd}>
         Добавить заказ-наряд
+      </Button>
+      <Button style={{ margin: "10px", float: "right" }} onClick={handleOpenEmployeeNotes}>
+        Заметки по работникам
       </Button>
       <OrdersFilter tableParams={tableParams} setTableParams={setTableParams} updateTable={setUpdate} />
       <Table

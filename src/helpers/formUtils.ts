@@ -37,7 +37,7 @@ export const formToOrderData = (form: IFormOrderInputs): OrderType => {
     post: form.post,
     car: form.car,
     driver: form.driver,
-    responsible: form.responsible,
+    responsible: form.responsible ? form.responsible : null,
     odometer: form.odometer,
     note: form.note,
     order_works: form.works,

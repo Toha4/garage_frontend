@@ -94,8 +94,14 @@ export interface IFormCorrectionTurnoverInputs {
 
 export interface IFormMovingTurnoverInputs {
   warehouse_outgoing: number;
-  warehouse_incoming: number;  
+  warehouse_incoming: number;
   quantity: number;
   price: number | string;
   sum: number | string;
+}
+
+export interface IEmployeeNoteInputs {
+  date: any;
+  employee: number;
+  note: string;
 }

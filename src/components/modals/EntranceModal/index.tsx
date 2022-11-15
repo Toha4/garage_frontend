@@ -77,7 +77,7 @@ const EntranceModalForm: React.FC<IEntranceModalForm> = ({
   }, []);
 
   const setOrderForm = (data: EntranceType) => {
-    setValue("date", moment(data.date, "DD.MM.YYYY h:mm:"));
+    setValue("date", moment(data.date, "DD.MM.YYYY"));
     setValue("document_number", data.document_number);
     setValue("responsible", data.responsible);
     setValue("provider", data.provider);

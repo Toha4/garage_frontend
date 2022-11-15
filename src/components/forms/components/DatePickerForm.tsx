@@ -3,7 +3,7 @@ import { DatePicker } from "antd";
 import { Controller } from "react-hook-form";
 import moment from "moment";
 
-interface IDateTimePickerForm {
+interface IDatePickerForm {
   name: string;
   control: any;
   onChange?: (date: moment.Moment, dateString: string) => void;
@@ -13,7 +13,7 @@ interface IDateTimePickerForm {
   placeholder?: string;
 }
 
-const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
+const DatePickerForm: React.FC<IDatePickerForm> = ({
   name,
   control,
   onChange,
@@ -44,4 +44,4 @@ const DateTimePickerForm: React.FC<IDateTimePickerForm> = ({
   );
 };
 
-export default DateTimePickerForm;
+export default DatePickerForm;

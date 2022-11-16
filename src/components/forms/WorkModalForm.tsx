@@ -99,7 +99,7 @@ const WorkModalForm: React.FC<IWorkModalForm> = ({ pk, open, onOk, onCancel }) =
             validateStatus={errors.name ? "error" : "success"}
             help={errors.name ? errors.name.message : null}
           >
-            <InputForm name="name" maxLength={32} control={control} />
+            <InputForm name="name" maxLength={64} control={control} />
           </Form.Item>
           <Form.Item
             label="Категория"

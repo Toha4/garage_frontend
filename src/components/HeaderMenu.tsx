@@ -44,10 +44,6 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
           key: "/report-cars",
           label: <Link to="/report-cars"> По ремонту ТС </Link>,
         },
-        // {
-        //   key: "/report-car-detail",
-        //   label: <Link to="/report-car-detail"> По ТС подробно </Link>,
-        // },
         {
           key: "/report-mechanics",
           label: <Link to="/report-mechanics"> По работникам </Link>,
@@ -55,6 +51,10 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
         {
           key: "/report-materials",
           label: <Link to="/report-materials"> По материалам </Link>,
+        },
+        {
+          key: "/report-car-detail",
+          label: <Link to="/report-car-detail"> По ТС подробный </Link>,
         },
       ],
     },

@@ -64,3 +64,23 @@ export type ReportMaterialType = {
   remains_quantity: number;
   turnovers: ReportTurnoverShortType[];
 };
+
+export type StatisticParamsType = {
+  name_param: string;
+  total: number | string;
+  maintenance: number | string;
+  other: number | string;
+  repair: number | string;
+};
+
+export type ReportCarOrders = {
+  pk: number;
+  number: number;
+  reason_name: string;
+  date_begin: string;
+  work_list: string[];
+  work_minutes_total: number;
+  material_list: string[];
+  sum_total: number;
+  note: number; 
+};

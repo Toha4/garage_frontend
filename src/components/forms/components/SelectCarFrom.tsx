@@ -11,9 +11,18 @@ interface ISelectCarForm {
   control: any;
   onChange?: (value: any, option: any) => void;
   dateRequest?: moment.Moment;
+  allowClear?: boolean;
+  width?: number | string;
 }
 
-const SelectCarForm: React.FC<ISelectCarForm> = ({ name, control, onChange, dateRequest }) => {
+const SelectCarForm: React.FC<ISelectCarForm> = ({
+  name,
+  control,
+  onChange,
+  dateRequest,
+  allowClear = false,
+  width,
+}) => {
   const DataCarService = new CarService();
 
   const [cars, setCar] = React.useState<CarShortType[]>();
@@ -41,8 +50,10 @@ const SelectCarForm: React.FC<ISelectCarForm> = ({ name, control, onChange, date
       control={control}
       render={({ field }) => (
         <Select
+          style={{ width: width }}
           showSearch
           placeholder="Выберите"
+          allowClear={allowClear}
           filterOption={(input, option) =>
             (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
           }

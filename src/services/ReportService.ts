@@ -32,6 +32,22 @@ class ReportService extends BaseService {
   exportReportMaterialsExcel = async (params = {}) => {
     return await this.getResource(`${this._apiURL}materials/excel/`, params);
   };
+
+  getStatistiCar = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}car/statistic/`, params);
+  };
+
+  exportStatistiCarExcel = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}car/statistic/excel/`, params);
+  };
+
+  getReportOrdersCar = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}car/orders/`, params);
+  };
+
+  exportReportCarOrdersExcel = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}car/orders/excel/`, params);
+  };
 }
 
 export default ReportService;

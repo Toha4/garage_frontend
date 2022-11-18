@@ -14,6 +14,7 @@ import NotFound from "./components/NotFound";
 import ReportCarsPage from "./pages/ReportCarsPage";
 import ReportMechanicsPage from "./pages/ReportMechanicPage";
 import ReportMaterialsPage from "./pages/ReportMaterialsPage";
+import ReportCarDetailPage from "./pages/ReportCarDetailPage";
 
 const { Content } = Layout;
 
@@ -34,6 +35,7 @@ function App() {
                 <Route path="/warehouse-remains" element={<PrivateRoute user={user} component={WarehouseRemainsPage} title="Материалы"/>} />
                 <Route path="/warehouse-entrance" element={<PrivateRoute user={user} component={WarehouseEntrancePage} title="Поступления"/>} />
                 <Route path="/report-cars" element={<PrivateRoute user={user} component={ReportCarsPage} title="Отчет по ремонту ТС"/>} />
+                <Route path="/report-car-detail" element={<PrivateRoute user={user} component={ReportCarDetailPage} title="Подробный отчет по ТС"/>} />
                 <Route path="/report-mechanics" element={<PrivateRoute user={user} component={ReportMechanicsPage} title="Отчет по работникам"/>} />
                 <Route path="/report-materials" element={<PrivateRoute user={user} component={ReportMaterialsPage} title="Отчет по материалам"/>} />
                 <Route path="/handbooks" element={<PrivateRoute user={user} component={HandbooksPage} title="Справочники"/>} />

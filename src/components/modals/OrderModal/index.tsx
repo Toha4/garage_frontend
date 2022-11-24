@@ -366,7 +366,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
           </Col>
           <Col span={6}>
             <Form.Item label="Ответственный" validateStatus={errors.responsible ? "error" : "success"}>
-              <SelectEmployeeForm name="responsible" control={control} type={3} dateRequest={dateRequestData} />
+              <SelectEmployeeForm name="responsible" control={control} type={[3]} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
         </Row>
@@ -397,7 +397,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Водитель">
-              <SelectEmployeeForm name="driver" control={control} type={1} dateRequest={dateRequestData} />
+              <SelectEmployeeForm name="driver" control={control} type={[1]} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
           <Col span={12}>

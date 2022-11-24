@@ -102,7 +102,7 @@ const EmployeeNoteModalForm: React.FC<IEmployeeNoteModalForm> = ({ pk, open, onO
             <DatePickerForm name="date" control={control} required width={"160px"} />
           </Form.Item>
           <Form.Item label="Работник" required validateStatus={errors.employee ? "error" : "success"}>
-            <SelectEmployeeForm name="employee" control={control} type={2} dateRequest={dateRequestData} />
+            <SelectEmployeeForm name="employee" control={control} type={[2]} dateRequest={dateRequestData} />
           </Form.Item>
           <Form.Item label="Текст" required>
             <TextAreaForm name="note" rows={2} control={control} />

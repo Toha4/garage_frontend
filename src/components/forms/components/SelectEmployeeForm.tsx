@@ -9,7 +9,7 @@ const { Option } = Select;
 interface ISelectEmployeeForm {
   name: string;
   control: any;
-  type: number;
+  type: number[];
   dateRequest?: moment.Moment;
 }
 
@@ -27,7 +27,7 @@ const SelectEmployeeForm: React.FC<ISelectEmployeeForm> = ({ name, control, type
       alert(error);
     };
 
-    let params: any = { type: type };
+    let params: any = { types: type };
     if (dateRequest) {
       params.date_request = dateRequest.format("DD.MM.YYYY");
     }

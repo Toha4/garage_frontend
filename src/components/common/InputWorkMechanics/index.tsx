@@ -50,7 +50,7 @@ const InputWorkMechanics: React.FC<IInputWorkMechanics> = ({
       newValue.splice(index, 1);
       onChange(newValue);
 
-      if (newValue.length === 0 && refInput.current) {
+      if (refInput.current) {
         refInput.current!.focus();
       }
     }

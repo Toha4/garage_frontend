@@ -264,7 +264,7 @@ const EntranceModalForm: React.FC<IEntranceModalForm> = ({
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Кто оприходовал" required validateStatus={errors.responsible ? "error" : "success"}>
-              <SelectEmployeeForm name="responsible" control={control} type={3} dateRequest={dateRequestData} />
+              <SelectEmployeeForm name="responsible" control={control} type={[3]} dateRequest={dateRequestData} />
             </Form.Item>
           </Col>
           <Col span={18}>

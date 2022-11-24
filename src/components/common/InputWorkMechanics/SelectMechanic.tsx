@@ -26,7 +26,7 @@ const SelectMechanic: React.FC<ISelectMechanic> = ({ dateRequest, onSelect, excl
       alert(error);
     };
 
-    let params: any = { type: 2 };
+    let params: any = { types: [2, 1] };
     if (dateRequest) {
       params.date_request = dateRequest.format("DD.MM.YYYY");
     }

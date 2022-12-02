@@ -10,10 +10,11 @@ interface ISelectEmployeeForm {
   name: string;
   control: any;
   type: number[];
+  disable?: boolean;
   dateRequest?: moment.Moment;
 }
 
-const SelectEmployeeForm: React.FC<ISelectEmployeeForm> = ({ name, control, type, dateRequest }) => {
+const SelectEmployeeForm: React.FC<ISelectEmployeeForm> = ({ name, control, type, disable = false, dateRequest }) => {
   const DataEmployeeService = new EmployeeService();
 
   const [employees, setEmployee] = React.useState<EmployeeShortType[]>();
@@ -43,7 +44,8 @@ const SelectEmployeeForm: React.FC<ISelectEmployeeForm> = ({ name, control, type
         <Select
           allowClear
           showSearch
-          placeholder="Выберите"
+          placeholder={!disable ? "Выберите" : ""}
+          disabled={disable}
           filterOption={(input, option) =>
             (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
           }

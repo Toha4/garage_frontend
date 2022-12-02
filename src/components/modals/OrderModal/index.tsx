@@ -92,6 +92,8 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
 
     if (action === ActionTypes.EDIT && pk) {
       const onDataLoaded = (data: OrderType) => {
+        data.car = data.car === null ? -1 : data.car;
+
         setOrderData(data);
         setOrderForm(data);
       };
@@ -118,7 +120,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     setValue("driver", data.driver);
     setValue("reason", data.reason);
     setValue("post", data.post);
-    setValue("car", data.car);
+    setValue("car", data.car === null ? -1 : data.car);
     setValue("car_name", data.car_name || "");
     setValue("odometer", data.odometer);
     setValue("note", data.note);
@@ -273,12 +275,18 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
   };
 
   const onChangeCar = (value: any, option: any) => {
-    DataCarService.getCar(value)
-      .then((data: CarType) => {
-        setValue("car_name", data.name);
-        setValue("driver", data.driver_pk);
-      })
-      .catch((error) => alert(error));
+    if (value === -1) {
+      setValue("car_name", "");
+      setValue("driver", null);
+      setValue("odometer", null);
+    } else {
+      DataCarService.getCar(value)
+        .then((data: CarType) => {
+          setValue("car_name", data.name);
+          setValue("driver", data.driver_pk);
+        })
+        .catch((error) => alert(error));
+    }
   };
 
   const isShowRemoveButton = (): boolean => {
@@ -291,6 +299,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
 
   const dateRequestData = watch("date_begin");
   const defaultCompatbility = watch("car_name");
+  const withoutCar = watch("car") === -1;
 
   let is_decommissioned_materials = false;
   if (orderPk !== null && orderData?.turnovers_from_order) {
@@ -374,7 +383,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Гос. №" required validateStatus={errors.car ? "error" : "success"}>
-              <SelectCarForm name="car" control={control} onChange={onChangeCar} dateRequest={dateRequestData} />
+              <SelectCarForm
+                name="car"
+                control={control}
+                onChange={onChangeCar}
+                dateRequest={dateRequestData}
+                addWithoutCar
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -383,13 +398,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
                 name="car_name"
                 control={control}
                 disabled
-                placeholder="Заполнится автоматически при выборе гос. №"
+                placeholder={withoutCar ? "-" : "Заполнится автоматически при выборе гос. №"}
               />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label="Пробег">
-              <InputNumberForm name="odometer" controls={false} control={control} />
+              <InputNumberForm name="odometer" controls={false} disable={withoutCar} control={control} />
             </Form.Item>
           </Col>
         </Row>
@@ -397,7 +412,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
         <Row gutter={24}>
           <Col span={6}>
             <Form.Item label="Водитель">
-              <SelectEmployeeForm name="driver" control={control} type={[1]} dateRequest={dateRequestData} />
+              <SelectEmployeeForm
+                name="driver"
+                control={control}
+                type={[1]}
+                disable={withoutCar}
+                dateRequest={dateRequestData}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>

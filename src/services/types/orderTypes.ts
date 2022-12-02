@@ -47,7 +47,7 @@ export type OrderType = {
   date_begin: string;
   date_end: string | null;
   post: number | null;
-  car: number;
+  car: number | null;
   car_name?: string;
   driver: number | null;
   responsible: number | null;

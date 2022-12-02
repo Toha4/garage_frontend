@@ -35,7 +35,7 @@ export const formToOrderData = (form: IFormOrderInputs): OrderType => {
     date_begin: form.date_begin ? form.date_begin.format("DD.MM.YYYY HH:mm") : null,
     date_end: form.date_end ? form.date_end.format("DD.MM.YYYY HH:mm") : null,
     post: form.post,
-    car: form.car,
+    car: form.car === -1 ? null : form.car,
     driver: form.driver,
     responsible: form.responsible ? form.responsible : null,
     odometer: form.odometer,

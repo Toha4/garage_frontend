@@ -13,6 +13,7 @@ interface ISelectCarForm {
   dateRequest?: moment.Moment;
   allowClear?: boolean;
   width?: number | string;
+  addWithoutCar?: boolean;
 }
 
 const SelectCarForm: React.FC<ISelectCarForm> = ({
@@ -22,14 +23,15 @@ const SelectCarForm: React.FC<ISelectCarForm> = ({
   dateRequest,
   allowClear = false,
   width,
+  addWithoutCar = false,
 }) => {
   const DataCarService = new CarService();
 
-  const [cars, setCar] = React.useState<CarShortType[]>();
+  const [cars, setCars] = React.useState<CarShortType[]>();
 
   React.useEffect(() => {
     const onDataLoaded = (data: CarShortType[]) => {
-      setCar(data);
+      setCars(data);
     };
 
     const onError = (error: any) => {
@@ -63,6 +65,12 @@ const SelectCarForm: React.FC<ISelectCarForm> = ({
             field.onChange(value, option);
           }}
         >
+          {addWithoutCar && (
+            <Option key={-1} value={-1}>
+              БЕЗ ТС
+            </Option>
+          )}
+
           {cars &&
             cars.map((car, _) => (
               <Option key={car.pk} value={car.pk}>

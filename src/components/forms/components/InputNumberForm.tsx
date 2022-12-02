@@ -12,6 +12,7 @@ interface IInputNumberForm {
   max?: number;
   precision?: number;
   width?: string | number;
+  disable?: boolean;
   onChange?: (value: any) => void;
 }
 
@@ -25,6 +26,7 @@ const InputNumberForm: React.FC<IInputNumberForm> = ({
   max,
   precision,
   width,
+  disable = false,
   onChange,
 }) => {
   return (
@@ -39,6 +41,7 @@ const InputNumberForm: React.FC<IInputNumberForm> = ({
           precision={precision}
           min={min}
           max={max}
+          disabled={disable}
           style={{ width: width || "100%" }}
           {...field}
           onChange={(value) => {

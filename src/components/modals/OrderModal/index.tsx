@@ -268,6 +268,14 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     }
   };
 
+  const onChangeDateBegin = (date: moment.Moment, dateString: string) => {
+    if (date <= moment()) {
+      setValue("status", Status.WORK);
+    } else {
+      setValue("status", Status.REQUEST);
+    }
+  };
+
   const onChangeDateEnd = (date: moment.Moment, dateString: string) => {
     if (date <= moment()) {
       setValue("status", Status.COMPLETED);
@@ -365,7 +373,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
           </Col>
           <Col span={6}>
             <Form.Item label="Дата начала" required validateStatus={errors.date_begin ? "error" : "success"}>
-              <DateTimePickerForm name="date_begin" control={control} required width={"199px"} />
+              <DateTimePickerForm name="date_begin" control={control} required width={"199px"} onChange={onChangeDateBegin} />
             </Form.Item>
           </Col>
           <Col span={6}>

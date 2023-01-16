@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Layout, Menu, MenuProps } from "antd";
-import { AppstoreAddOutlined, FileTextOutlined, HomeOutlined, ToolOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, FileTextOutlined, HomeOutlined, ToolOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import User from "./User";
 import { IUser } from "../services/AuthService";
 
@@ -19,6 +19,11 @@ const HeaderMenu: React.FC<IHeaderMenu> = ({ user }) => {
       key: "/",
       icon: <ToolOutlined />,
       label: <Link to="/"> Заказ-наряды </Link>,
+    },
+    {
+      key: "/cars-tasks",
+      icon: <UnorderedListOutlined />,
+      label: <Link to="/cars-tasks"> Задачи </Link>,
     },
     {
       key: "/warehouse",

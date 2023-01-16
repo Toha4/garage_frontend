@@ -2,6 +2,7 @@ export * from "./coreTypes";
 export * from "./orderTypes";
 export * from "./warehouseTypes";
 export * from "./reportTypes";
+export * from "./carTaskTypes";
 
 type NumbersType = {
   current: number;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Form, Modal, Row, Tabs } from "antd";
+import { Button, Col, Form, Modal, Row, Tabs, Typography } from "antd";
 import moment from "moment";
 import { useForm } from "react-hook-form";
 import { ActionTypes } from "../../../helpers/types";
@@ -12,7 +12,7 @@ import DateTimePickerForm from "../../forms/components/DateTimePickerForm";
 import SelectEmployeeForm from "../../forms/components/SelectEmployeeForm";
 import SelectReasonForm from "../../forms/components/SelectReasonForm";
 import SelectPostForm from "../../forms/components/SelectPostFrom";
-import SelectCarForm from "../../forms/components/SelectCarFrom";
+import SelectCarForm from "../../forms/components/SelectCarForm";
 import InputForm from "../../forms/components/InputForm";
 import TextAreaForm from "../../forms/components/TextAreaForm";
 import InputNumberForm from "../../forms/components/InputNumberForm";
@@ -22,6 +22,9 @@ import { IFormOrderInputs } from "../../interface";
 import { formToOrderData, hasChangeOrderForm } from "../../../helpers/formUtils";
 import TableOrderWorksForm from "./TableOrderWorksForm";
 import TableOrderMaterialsForm from "./TableOrderMaterialsForm";
+import TableOrderTasks from "./TableOrderTasks";
+
+const { Text } = Typography;
 
 interface IOrderModalForm {
   orderPk: number | null;
@@ -72,7 +75,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
   const [confirmLoading, setConfirmLoading] = React.useState<boolean>(false);
   const [orderData, setOrderData] = React.useState<OrderType>();
   const [saveFlag, setSaveFlag] = React.useState<boolean>(false);
-
+  const [tabActiveKey, setTabActiveKey] = React.useState<undefined | string>(undefined);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -287,11 +290,23 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
       setValue("car_name", "");
       setValue("driver", null);
       setValue("odometer", null);
+      setOrderData({ ...orderData, car: value } as OrderType);
     } else {
       DataCarService.getCar(value)
         .then((data: CarType) => {
           setValue("car_name", data.name);
           setValue("driver", data.driver_pk);
+          setOrderData({ ...orderData, car_task_count: data.car_task_count, car: value } as OrderType);
+        })
+        .catch((error) => alert(error));
+    }
+  };
+
+  const handleChangeTaskCount = () => {
+    if (orderData && orderData.car) {
+      DataCarService.getCar(orderData.car)
+        .then((data: CarType) => {
+          setOrderData({ ...orderData, car_task_count: data.car_task_count } as OrderType);
         })
         .catch((error) => alert(error));
     }
@@ -317,6 +332,11 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
       }
     }
   }
+
+  const show_task_info =
+    orderData?.status !== Status.COMPLETED && orderData?.car_task_count !== undefined && orderData.car_task_count > 0;
+
+  const show_task_tab = orderData && orderData?.car !== null && orderData.car > 0;
 
   return (
     <Modal
@@ -373,7 +393,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
           </Col>
           <Col span={6}>
             <Form.Item label="Дата начала" required validateStatus={errors.date_begin ? "error" : "success"}>
-              <DateTimePickerForm name="date_begin" control={control} required width={"199px"} onChange={onChangeDateBegin} />
+              <DateTimePickerForm
+                name="date_begin"
+                control={control}
+                required
+                width={"199px"}
+                onChange={onChangeDateBegin}
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -450,7 +476,23 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
         </Row>
       </Form>
 
-      <Tabs defaultActiveKey="1" style={{ padding: "0px" }}>
+      {show_task_info && (
+        <>
+          <Text type="warning">{"Для данного ТС есть невыполненные задачи: "}</Text>
+          <Button
+            type="link"
+            style={{ padding: "0px" }}
+            onClick={() => setTabActiveKey("3")}
+          >{`${orderData.car_task_count} шт.`}</Button>
+        </>
+      )}
+
+      <Tabs
+        defaultActiveKey="1"
+        style={{ padding: "0px" }}
+        activeKey={tabActiveKey}
+        onChange={(activeKey) => setTabActiveKey(activeKey)}
+      >
         <Tabs.TabPane tab="Работы" key="1">
           <Form.Item>
             <TableOrderWorksForm name="works" control={control} editMode={editMode} dateRequest={dateRequestData} />
@@ -466,8 +508,13 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
             />
           </Form.Item>
         </Tabs.TabPane>
-        <Tabs.TabPane disabled tab="Диагностика" key="3">
-          In development!
+        <Tabs.TabPane tab="Задачи ТС" key="3" disabled={!show_task_tab}>
+          <TableOrderTasks
+            order={pk}
+            car={orderData?.car ? orderData.car : null}
+            editMode={editMode}
+            onChangeTaskCount={handleChangeTaskCount}
+          />
         </Tabs.TabPane>
       </Tabs>
     </Modal>

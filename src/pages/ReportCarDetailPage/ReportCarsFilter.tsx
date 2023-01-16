@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Form, Button, Select } from "antd";
 import DatePickerForm from "../../components/forms/components/DatePickerForm";
-import SelectCarForm from "../../components/forms/components/SelectCarFrom";
+import SelectCarForm from "../../components/forms/components/SelectCarForm";
 
 const { Option } = Select;
 

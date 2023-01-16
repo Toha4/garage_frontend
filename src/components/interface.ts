@@ -105,3 +105,11 @@ export interface IEmployeeNoteInputs {
   employee: number;
   note: string;
 }
+
+export interface ICarTaskInputs {
+  car: number;
+  description: string;
+  materials: string;
+  is_completed: boolean;
+  date_completed: any;
+}

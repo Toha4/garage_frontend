@@ -14,6 +14,8 @@ interface ISelectCarForm {
   allowClear?: boolean;
   width?: number | string;
   addWithoutCar?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
 }
 
 const SelectCarForm: React.FC<ISelectCarForm> = ({
@@ -24,6 +26,8 @@ const SelectCarForm: React.FC<ISelectCarForm> = ({
   allowClear = false,
   width,
   addWithoutCar = false,
+  disabled = false,
+  placeholder = "Выберите",
 }) => {
   const DataCarService = new CarService();
 
@@ -54,8 +58,9 @@ const SelectCarForm: React.FC<ISelectCarForm> = ({
         <Select
           style={{ width: width }}
           showSearch
-          placeholder="Выберите"
+          placeholder={placeholder}
           allowClear={allowClear}
+          disabled={disabled}
           filterOption={(input, option) =>
             (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
           }

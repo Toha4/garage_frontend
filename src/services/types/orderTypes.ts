@@ -49,6 +49,7 @@ export type OrderType = {
   post: number | null;
   car: number | null;
   car_name?: string;
+  car_task_count?: number;
   driver: number | null;
   responsible: number | null;
   odometer: number | null;

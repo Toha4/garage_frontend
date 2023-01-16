@@ -15,8 +15,14 @@ interface IFormInputs {
   date_end: any;
 }
 
+const DefaultValue: IFormInputs = {
+  general_search: "",
+  date_begin: undefined,
+  date_end: undefined,
+};
+
 const EntranceFilter: React.FC<IEntranceFilter> = ({ tableParams, setTableParams, updateTable }) => {
-  const { register, handleSubmit, setValue, control } = useForm<IFormInputs>();
+  const { register, handleSubmit, reset, control, watch } = useForm<IFormInputs>();
 
   React.useEffect(() => {
     register("general_search");
@@ -27,9 +33,7 @@ const EntranceFilter: React.FC<IEntranceFilter> = ({ tableParams, setTableParams
   }, []);
 
   const setValueDefalt = () => {
-    setValue("general_search", "");
-    setValue("date_begin", undefined);
-    setValue("date_end", undefined);
+    reset(DefaultValue);
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -46,6 +50,8 @@ const EntranceFilter: React.FC<IEntranceFilter> = ({ tableParams, setTableParams
     setValueDefalt();
     handleSubmit(onSubmit)();
   };
+
+  const showResetButton = JSON.stringify(DefaultValue) != JSON.stringify(watch());
 
   return (
     <Form className="ant-advanced-search-form" name="advanced_search">
@@ -92,9 +98,11 @@ const EntranceFilter: React.FC<IEntranceFilter> = ({ tableParams, setTableParams
           >
             Поиск
           </Button>
-          <Button type="link" size="small" onClick={onResetFilter}>
-            Сбросить
-          </Button>
+          {showResetButton && (
+            <Button type="link" size="small" onClick={onResetFilter}>
+              Сбросить
+            </Button>
+          )}
         </div>
       </div>
     </Form>

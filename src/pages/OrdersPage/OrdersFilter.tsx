@@ -20,8 +20,16 @@ interface IFormInputs {
   date_end: any;
 }
 
+const DefaultValue: IFormInputs = {
+  general_search: "",
+  reason_type: undefined,
+  statuses: undefined,
+  date_begin: undefined,
+  date_end: undefined,
+};
+
 const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, updateTable }) => {
-  const { register, handleSubmit, setValue, control } = useForm<IFormInputs>();
+  const { register, handleSubmit, reset, control, watch } = useForm<IFormInputs>();
 
   React.useEffect(() => {
     register("general_search");
@@ -34,12 +42,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
   }, []);
 
   const setValueDefalt = () => {
-    // TODO: Make save filter in localStorage
-    setValue("general_search", "");
-    setValue("reason_type", undefined);
-    setValue("statuses", undefined);
-    setValue("date_begin", undefined);
-    setValue("date_end", undefined);
+    reset(DefaultValue);
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -76,6 +79,8 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
       </Option>
     );
   }
+
+  const showResetButton = JSON.stringify(DefaultValue) != JSON.stringify(watch());
 
   return (
     <Form className="ant-advanced-search-form" name="advanced_search">
@@ -144,9 +149,11 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
           >
             Поиск
           </Button>
-          <Button type="link" size="small" onClick={onResetFilter}>
-            Сбросить
-          </Button>
+          {showResetButton && (
+            <Button type="link" size="small" onClick={onResetFilter}>
+              Сбросить
+            </Button>
+          )}
         </div>
       </div>
     </Form>

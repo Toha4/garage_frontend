@@ -15,6 +15,7 @@ import ReportCarsPage from "./pages/ReportCarsPage";
 import ReportMechanicsPage from "./pages/ReportMechanicPage";
 import ReportMaterialsPage from "./pages/ReportMaterialsPage";
 import ReportCarDetailPage from "./pages/ReportCarDetailPage";
+import CarsTasksPage from "./pages/CarsTasksPage";
 
 const { Content } = Layout;
 
@@ -32,6 +33,7 @@ function App() {
               <Routes>
                 <Route path="/login" element={isLogged === false ? <LoginForm /> : <Navigate to="/" />} />
                 <Route path="/" element={<PrivateRoute user={user} component={OrdersPage} title="Заказ-наряды"/>} />
+                <Route path="/cars-tasks" element={<PrivateRoute user={user} component={CarsTasksPage} title="Задачи ТС"/>} />
                 <Route path="/warehouse-remains" element={<PrivateRoute user={user} component={WarehouseRemainsPage} title="Материалы"/>} />
                 <Route path="/warehouse-entrance" element={<PrivateRoute user={user} component={WarehouseEntrancePage} title="Поступления"/>} />
                 <Route path="/report-cars" element={<PrivateRoute user={user} component={ReportCarsPage} title="Отчет по ремонту ТС"/>} />

@@ -24,6 +24,7 @@ export type CarType = {
   driver_pk: number;
   date_decommissioned: string;
   has_tag_material?: boolean;
+  car_task_count?: number;
 };
 
 export type CarShortType = Pick<CarType, "pk" | "state_number" | "name">;

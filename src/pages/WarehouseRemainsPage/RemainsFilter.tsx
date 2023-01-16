@@ -20,8 +20,16 @@ interface IFormInputs {
   hide_empty: boolean;
 }
 
+const DefaultValue: IFormInputs = {
+  general_search: "",
+  category: undefined,
+  warehouse: undefined,
+  compatbility: undefined,
+  hide_empty: true,
+};
+
 const RemainsFilter: React.FC<IRemainsFilter> = ({ tableParams, setTableParams, updateTable }) => {
-  const { register, handleSubmit, setValue, control } = useForm<IFormInputs>();
+  const { register, handleSubmit, reset, control, watch } = useForm<IFormInputs>();
 
   React.useEffect(() => {
     register("general_search");
@@ -34,11 +42,7 @@ const RemainsFilter: React.FC<IRemainsFilter> = ({ tableParams, setTableParams, 
   }, []);
 
   const setValueDefalt = () => {
-    setValue("general_search", "");
-    setValue("category", undefined);
-    setValue("warehouse", undefined);
-    setValue("compatbility", undefined);
-    setValue("hide_empty", true);
+    reset(DefaultValue);
   };
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
@@ -57,6 +61,8 @@ const RemainsFilter: React.FC<IRemainsFilter> = ({ tableParams, setTableParams, 
     setValueDefalt();
     handleSubmit(onSubmit)();
   };
+
+  const showResetButton = JSON.stringify(DefaultValue) != JSON.stringify(watch());
 
   return (
     <Form className="ant-advanced-search-form" name="advanced_search">
@@ -121,9 +127,11 @@ const RemainsFilter: React.FC<IRemainsFilter> = ({ tableParams, setTableParams, 
           >
             Применить
           </Button>
-          <Button type="link" size="small" onClick={onResetFilter}>
-            Сбросить
-          </Button>
+          {showResetButton && (
+            <Button type="link" size="small" onClick={onResetFilter}>
+              Сбросить
+            </Button>
+          )}
         </div>
       </div>
     </Form>

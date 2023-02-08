@@ -43,7 +43,7 @@ export type OrderType = {
   updated?: string;
   number?: number;
   status: number;
-  reason: number;
+  reasons: number[];
   date_begin: string;
   date_end: string | null;
   post: number | null;

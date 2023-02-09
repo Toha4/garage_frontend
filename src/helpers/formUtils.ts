@@ -15,7 +15,7 @@ const isSameDate = (date1: string | null, date2: moment.Moment | null): boolean 
 export const hasChangeOrderForm = (data: OrderType, form: IFormOrderInputs): boolean => {
   return !(
     data.status === form.status &&
-    data.reason === form.reason &&
+    JSON.stringify(data.reasons) === JSON.stringify(form.reasons) &&
     isSameDate(data.date_begin, form.date_begin) &&
     isSameDate(data.date_end, form.date_end) &&
     data.post === form.post &&
@@ -31,7 +31,7 @@ export const hasChangeOrderForm = (data: OrderType, form: IFormOrderInputs): boo
 export const formToOrderData = (form: IFormOrderInputs): OrderType => {
   return {
     status: form.status,
-    reason: form.reason,
+    reasons: form.reasons,
     date_begin: form.date_begin ? form.date_begin.format("DD.MM.YYYY HH:mm") : null,
     date_end: form.date_end ? form.date_end.format("DD.MM.YYYY HH:mm") : null,
     post: form.post,

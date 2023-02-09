@@ -10,7 +10,7 @@ import { CarType, OrderType } from "../../../services/types";
 import SelectOrderStatusForm from "../../forms/components/SelectOrderStatusForm";
 import DateTimePickerForm from "../../forms/components/DateTimePickerForm";
 import SelectEmployeeForm from "../../forms/components/SelectEmployeeForm";
-import SelectReasonForm from "../../forms/components/SelectReasonForm";
+import SelectMultipleReasonForm from "../../forms/components/SelectMultipleReasonForm";
 import SelectPostForm from "../../forms/components/SelectPostFrom";
 import SelectCarForm from "../../forms/components/SelectCarForm";
 import InputForm from "../../forms/components/InputForm";
@@ -84,7 +84,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     register("date_end");
     register("responsible");
     register("driver");
-    register("reason", { required: "Выберите причину!" });
+    register("reasons", { required: "Выберите причину!" });
     register("post");
     register("car", { required: "Выберите гос номер!" });
     register("car_name");
@@ -121,7 +121,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
     setValue("date_end", data.date_end ? moment(data.date_end, "DD.MM.YYYY h:mm:") : null);
     setValue("responsible", data.responsible);
     setValue("driver", data.driver);
-    setValue("reason", data.reason);
+    setValue("reasons", data.reasons);
     setValue("post", data.post);
     setValue("car", data.car === null ? -1 : data.car);
     setValue("car_name", data.car_name || "");
@@ -456,8 +456,8 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Причина" required validateStatus={errors.reason ? "error" : "success"}>
-              <SelectReasonForm name="reason" control={control} />
+            <Form.Item label="Причина" required validateStatus={errors.reasons ? "error" : "success"}>
+              <SelectMultipleReasonForm name="reasons" control={control} />
             </Form.Item>
           </Col>
           <Col span={6}>

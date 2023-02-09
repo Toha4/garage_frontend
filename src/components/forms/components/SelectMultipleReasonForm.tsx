@@ -6,12 +6,12 @@ import { ReasonType } from "../../../services/types";
 
 const { Option } = Select;
 
-interface ISelectReasonForm {
+interface ISelectMultipleReasonForm {
   name: string;
   control: any;
 }
 
-const SelectReasonForm: React.FC<ISelectReasonForm> = ({ name, control }) => {
+const SelectMultipleReasonForm: React.FC<ISelectMultipleReasonForm> = ({ name, control }) => {
   const DataReasonService = new ReasonService();
 
   const [reasons, setReasons] = React.useState<ReasonType[]>();
@@ -34,6 +34,7 @@ const SelectReasonForm: React.FC<ISelectReasonForm> = ({ name, control }) => {
       control={control}
       render={({ field }) => (
         <Select
+          mode="multiple"
           showSearch
           placeholder="Выберите"
           filterOption={(input, option) =>
@@ -53,4 +54,4 @@ const SelectReasonForm: React.FC<ISelectReasonForm> = ({ name, control }) => {
   );
 };
 
-export default SelectReasonForm;
+export default SelectMultipleReasonForm;

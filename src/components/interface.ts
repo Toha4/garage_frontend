@@ -15,7 +15,7 @@ export interface IFormOrderInputs {
   date_end: any;
   responsible: number | null;
   driver: number | null;
-  reason: number;
+  reasons: number[];
   post: number | null;
   car: number;
   car_name: string;

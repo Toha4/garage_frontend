@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Form, Button } from "antd";
+import { Form, Button, Row, Col } from "antd";
 import DatePickerForm from "../../components/forms/components/DatePickerForm";
 
 export type ReportFilterType = { [key: string]: string | number | number[] | undefined };
@@ -58,34 +58,42 @@ const ReportMechanicsFilter: React.FC<IReportMechanicsFilter> = ({
 
   return (
     <Form className="ant-advanced-search-form" name="advanced_search">
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <Form.Item label="Период с" validateStatus={errors.date_begin ? "error" : "success"}>
-          <DatePickerForm name="date_begin" control={control} />
-        </Form.Item>
-        <Form.Item label="по" validateStatus={errors.date_end ? "error" : "success"}>
-          <DatePickerForm name="date_end" control={control} />
-        </Form.Item>
-        <div className="mt-10 ml-10">
-          <Button
-            type="primary"
-            onClick={() => {
-              handleSubmit(submit)();
-            }}
-            loading={loadingData}
-          >
-            Сформировать
-          </Button>
-          <Button
-            className="ml-10"
-            onClick={() => {
-              handleSubmit(exportExcel)();
-            }}
-            loading={loadingExport}
-          >
-            В Excel
-          </Button>
-        </div>
-      </div>
+      <Row>
+        <Col span={16}>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <Form.Item label="Период с" validateStatus={errors.date_begin ? "error" : "success"}>
+              <DatePickerForm name="date_begin" control={control} />
+            </Form.Item>
+            <Form.Item label="по" validateStatus={errors.date_end ? "error" : "success"}>
+              <DatePickerForm name="date_end" control={control} />
+            </Form.Item>
+            <div className="mt-10 ml-10">
+              <Button
+                type="primary"
+                onClick={() => {
+                  handleSubmit(submit)();
+                }}
+                loading={loadingData}
+              >
+                Сформировать
+              </Button>
+            </div>
+          </div>
+        </Col>
+        <Col span={8}>
+          <div className="mt-10 mr-10" style={{ float: 'right' }}>
+            <Button
+              className="ml-10"
+              onClick={() => {
+                handleSubmit(exportExcel)();
+              }}
+              loading={loadingExport}
+            >
+              В Excel
+            </Button>
+          </div>
+        </Col>
+      </Row>
     </Form>
   );
 };

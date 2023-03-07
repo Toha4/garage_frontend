@@ -29,6 +29,10 @@ class CarTaskService extends BaseService {
   deleteCarTask = async (pk: number) => {
     return await this.deleteResource(`${this._apiURL}${pk}`);
   };
+
+  exportTasksExcel = async (params = {}) => {
+    return await this.getResource(`${this._apiURL}excel/`, params);
+  };
 }
 
 export default CarTaskService;

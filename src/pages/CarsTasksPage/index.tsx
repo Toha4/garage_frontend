@@ -2,12 +2,7 @@ import React from "react";
 import { Button, Checkbox, Table } from "antd";
 import UserContext from "../../helpers/UserContext";
 import { ColumnsType } from "antd/lib/table";
-import {
-  CarTaskListType,
-  ResultResursePagation,
-  CarTaskUpdateType,
-  CarTaskType,
-} from "../../services/types";
+import { CarTaskListType, ResultResursePagation, CarTaskUpdateType, CarTaskType } from "../../services/types";
 import CarTaskService from "../../services/CarTaskService";
 import { ITableParams } from "../../components/interface";
 import CarsTasksFilter from "./CarsTasksFilter";
@@ -36,6 +31,7 @@ const CarsTasksPage: React.FC = () => {
   const [update, setUpdate] = React.useState<boolean>(true);
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [modalAction, setModalAction] = React.useState<ActionTypes>(ActionTypes.ADD);
+  const [loadingExport, setLoadingExport] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const onDataLoaded = ({ page_size, count, numbers, results }: ResultResursePagation<CarTaskListType>) => {
@@ -132,6 +128,32 @@ const CarsTasksPage: React.FC = () => {
     CarTaskServiceService.updateCarTask(pk, taskPlanningData).then(onSuccess).catch(onFailed);
   };
 
+  const handleExportExcel = () => {
+    setLoadingExport(true);
+
+    CarTaskServiceService.exportTasksExcel({
+      page: tableParams.pagination?.current,
+      sortField: tableParams.sortField,
+      sortOrder: tableParams.sortOrder,
+      ...tableParams.filters,
+      ...tableParams.search,
+    })
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = data.file;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+      })
+      .catch((error) => {
+        alert(error);
+      })
+      .finally(() => {
+        setLoadingExport(false);
+      });
+  };
+
   const columns: ColumnsType<CarTaskListType> = [
     {
       title: "Дата",
@@ -199,7 +221,13 @@ const CarsTasksPage: React.FC = () => {
       <Button disabled={!edit_mode} type="primary" style={{ margin: "10px" }} onClick={handleAdd}>
         Добавить задачу
       </Button>
-      <CarsTasksFilter tableParams={tableParams} setTableParams={setTableParams} updateTable={setUpdate} />
+      <CarsTasksFilter
+        tableParams={tableParams}
+        setTableParams={setTableParams}
+        updateTable={setUpdate}
+        onExportExcel={handleExportExcel}
+        loadingExport={loadingExport}
+      />
       <Table
         bordered
         rowKey={(record) => record.pk}

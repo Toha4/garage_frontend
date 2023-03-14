@@ -449,7 +449,7 @@ const OrderModalForm: React.FC<IOrderModalForm> = ({
               <SelectEmployeeForm
                 name="driver"
                 control={control}
-                type={[1]}
+                type={[1, 3]}
                 disable={withoutCar}
                 dateRequest={dateRequestData}
               />

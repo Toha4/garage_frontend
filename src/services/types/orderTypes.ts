@@ -8,6 +8,7 @@ export type OrderShortType = {
   status_name: string;
   car_name: string;
   car_state_number: string;
+  odometer: number,
   post_name: string;
   reason_name: string;
   note: string;

@@ -13,7 +13,7 @@ import { Status } from "../../helpers/constants";
 import EmployeeNotesModal from "../../components/modals/EmployeeNotesModal";
 
 const TableParamsDefault: ITableParams = {
-  pagination: {},
+  pagination: {current: 1, pageSize: 50,},
   sortField: undefined,
   sortOrder: undefined,
   filters: {},
@@ -65,6 +65,7 @@ const OrdersPage: React.FC = () => {
 
       DataOrderService.getOrders({
         page: tableParams.pagination?.current,
+        page_size: tableParams.pagination?.pageSize,
         sortField: tableParams.sortField,
         sortOrder: tableParams.sortOrder,
         ...tableParams.filters,
@@ -173,18 +174,24 @@ const OrdersPage: React.FC = () => {
       title: "Марка и модель",
       key: "car_name",
       dataIndex: "car_name",
+      sorter: true,
+      showSorterTooltip: false,
       width: 190,
     },
     {
       title: "Гос. №",
       key: "car_state_number",
       dataIndex: "car_state_number",
+      sorter: true,
+      showSorterTooltip: false,
       width: 110,
     },
     {
       title: "Пост",
       key: "post",
       dataIndex: "post_name",
+      sorter: true,
+      showSorterTooltip: false,
       width: 120,
     },
     {
@@ -254,7 +261,7 @@ const OrdersPage: React.FC = () => {
         dataSource={dataSource}
         onChange={handleTableChange}
         loading={loading}
-        pagination={{ ...tableParams.pagination, showSizeChanger: false }}
+        pagination={{ ...tableParams.pagination }}
         scroll={{
           y: "calc(100vh - 310px)",
           scrollToFirstRowOnChange: true,

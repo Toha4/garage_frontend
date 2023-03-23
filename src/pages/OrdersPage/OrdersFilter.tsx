@@ -3,6 +3,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { Form, Button, Select, Input, DatePicker } from "antd";
 import { ITableParams } from "../../components/interface";
 import { ReasonTypeNames, StatusNames } from "../../helpers/constants";
+import SelectCarForm from "../../components/forms/components/SelectCarForm";
 
 const { Option } = Select;
 
@@ -14,6 +15,7 @@ interface IOrdersFilter {
 
 interface IFormInputs {
   general_search: string;
+  car: number | undefined;
   reason_type: number | undefined;
   statuses: number[] | undefined;
   date_begin: any;
@@ -22,6 +24,7 @@ interface IFormInputs {
 
 const DefaultValue: IFormInputs = {
   general_search: "",
+  car: undefined,
   reason_type: undefined,
   statuses: undefined,
   date_begin: undefined,
@@ -33,6 +36,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
 
   React.useEffect(() => {
     register("general_search");
+    register("car");
     register("reason_type");
     register("statuses");
     register("date_begin");
@@ -49,6 +53,7 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
     tableParams.pagination = {};
 
     tableParams.search["general_search"] = data.general_search;
+    tableParams.search["car"] = data.car;
     tableParams.search["reason_type"] = data.reason_type;
     tableParams.search["statuses"] = data.statuses;
     tableParams.search["date_begin"] = data.date_begin?.format("DD.MM.YYYY");
@@ -101,6 +106,9 @@ const OrdersFilter: React.FC<IOrdersFilter> = ({ tableParams, setTableParams, up
               />
             )}
           />
+        </Form.Item>
+        <Form.Item>
+          <SelectCarForm width="120px" name="car" placeholder="Выбрать ТС" allowClear control={control} />
         </Form.Item>
         <Form.Item>
           <Controller

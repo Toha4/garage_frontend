@@ -187,6 +187,12 @@ const OrdersPage: React.FC = () => {
       width: 110,
     },
     {
+      title: "Пробег",
+      key: "odometer",
+      dataIndex: "odometer",
+      width: 100,
+    },
+    {
       title: "Пост",
       key: "post",
       dataIndex: "post_name",
